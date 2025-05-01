@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+:root {
+    --green: #27ae60;
+    --black: #333;
+    --white: #fff;
+    --bg-color: #f8f8f8;
+    --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+    --border: .1rem solid var(--black);
+    --danger: crimson;
+    --hover-bg: #222;
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+.btn {
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    border-radius: .5rem;
+    margin-top: 1rem;
+    font-size: 1.7rem;
+    padding: 1rem 3rem;
+    background: var(--green);
+    color: var(--white);
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: var(--hover-bg);
+}
+
+.message {
+    display: block;
+    background: var(--bg-color);
+    padding: 1.5rem 1rem;
+    font-size: 2rem;
+    color: var(--black);
+    margin-bottom: 2rem;
+    text-align: center;
+    border-radius: .5rem;
+}
+
+.container {
+    max-width: 1200px;
+    padding: 2rem;
+    margin: 0 auto;
+}
+
+.admin-product-form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+.admin-product-form-container h3 {
+    font-size: 24px;
+    color: var(--black);
+    margin-bottom: 15px;
+}
+
+.admin-product-form-container .box {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.admin-product-form-container textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.admin-product-form-container .btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--green);
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+.admin-product-form-container .btn:hover {
+    background: var(--black);
+}
+
+.admin-product-form-container img {
+    display: block;
+    margin: 15px auto;
+    border-radius: 6px;
+    max-width: 120px;
+    max-height: 120px;
+    object-fit: cover;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 480px) {
+    .admin-product-form-container {
+        padding: 15px;
+    }
+
+    .admin-product-form-container h3 {
+        font-size: 22px;
+    }
+
+    .admin-product-form-container .box {
+        padding: 10px;
+    }
+
+    .admin-product-form-container img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+}
+
+
+.product-display {
+    margin: 2rem 0;
+}
+
+.product-display .product-display-table {
+    width: 100%;
+    text-align: center;
+}
+
+.product-display .product-display-table thead {
+    background: var(--bg-color);
+}
+
+.product-display .product-display-table th,
+.product-display .product-display-table td {
+    padding: 1rem;
+    font-size: 1.8rem;
+    border-bottom: var(--border);
+}
+
+.product-display .product-display-table .btn:first-child {
+    margin-top: 0;
+}
+
+.product-display .product-display-table .btn:last-child {
+    background: var(--danger);
+}
+
+.product-display .product-display-table .btn:last-child:hover {
+    background: var(--hover-bg);
+}
+
+/* Media Query untuk tampilan lebih responsif */
+@media (max-width: 991px) {
+    html {
+        font-size: 55%;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-display {
+        overflow-x: auto;
+    }
+
+    .product-display .product-display-table {
+        width: 100%;
+        min-width: 600px; /* Pastikan tabel tidak terlalu kecil */
+    }
+}
+
+@media (max-width: 450px) {
+    html {
+        font-size: 50%;
+    }
+}
+
+@media (max-width: 450px) {
+    .btn-square {
+        padding: 10px 15px;
+        font-size: 14px;
+        min-width: 80px;
+    }
+}
+
+.btn {
+    padding: 12px 18px;  /* Increased padding for larger buttons */
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;  /* Larger text */
+}
+
+.btn-edit {
+    background-color: #4CAF50;  /* Green color */
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #45a049;
+}
+
+.btn-delete {
+    background-color: #f44336;  /* Red color */
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
