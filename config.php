@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
+$servername = "mysql.railway.internal";
 $username = "root";
-$password = ""; // kalau pakai XAMPP biasanya kosong
-$dbname = "webayam"; // ganti dengan nama database kamu
+$password = "wBnJxdmcyPKXCunHMemfcAkpjwgcnSET"; // kalau pakai XAMPP biasanya kosong
+$dbname = "railway"; // ganti dengan nama database kamu
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
