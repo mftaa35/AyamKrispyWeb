@@ -29,6 +29,18 @@
   <link rel="stylesheet" href="css/flaticon.css">
   <link rel="stylesheet" href="css/icomoon.css">
   <link rel="stylesheet" href="css/style.css">
+
+  <style>
+  /* Memastikan dropdown tetap terlihat saat dibuka dengan klik */
+  .dropdown-menu.show {
+    display: block !important;
+  }
+  
+  /* Opsional: Tambahkan ini jika ingin dropdown juga muncul saat hover */
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+</style>
 </head>
 
 <body class="goto-here">
@@ -73,9 +85,30 @@
               <a class="dropdown-item" href="checkout.html">Checkout</a>
             </div>
           </li>
+          <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Mendapatkan elemen dropdown Shop
+    const shopDropdown = document.getElementById('dropdown04');
+    
+    // Menambahkan event listener untuk klik
+    shopDropdown.addEventListener('click', function(e) {
+      e.preventDefault(); // Mencegah link mengarah ke '#'
+      
+      // Mendapatkan menu dropdown
+      const dropdownMenu = this.nextElementSibling;
+      
+      // Toggle class 'show' pada menu dropdown
+      if (dropdownMenu.classList.contains('show')) {
+        dropdownMenu.classList.remove('show');
+      } else {
+        dropdownMenu.classList.add('show');
+      }
+    });
+  });
+</script>
           <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
           <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span
-                class="icon-shopping_cart"></span>[0]</a></li>
+                class="icon-shopping_cart"></span></a></li>
           <li class="nav-item"><a href="login.html" class="nav-link">LOGIN</a></li>
           <li class="nav-item"><a href="loginadmin.php" class="nav-link">ADMIN</a></li>
           <li class="nav-item"><a href="loginkurir.php" class="nav-link">KURIR</a></li>
