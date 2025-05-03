@@ -227,6 +227,51 @@ html {
     color: white;
 }
 
+/* Tambahkan CSS ini ke file style.css atau dalam tag <style> di <head> */
+
+/* Styling untuk dropdown mobile */
+.dropdown-menu.show {
+  display: block !important;
+  position: relative !important;
+  width: 100%;
+  background-color: #222; /* Warna background sesuai tema gelap website */
+  padding: 10px 0;
+  margin-top: 0;
+  border: none;
+  border-radius: 0;
+}
+
+/* Styling untuk item dropdown */
+.dropdown-menu.show .dropdown-item {
+  color: #fff;
+  padding: 8px 20px;
+  text-align: left;
+}
+
+.dropdown-menu.show .dropdown-item:hover {
+  background-color: #333;
+}
+
+/* Jika pada mobile, perlebar area klik */
+@media (max-width: 768px) {
+  .nav-item.dropdown > a, .shop > a {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+  }
+  
+  /* Animasi sederhana untuk dropdown */
+  .dropdown-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+  
+  .dropdown-menu.show {
+    max-height: 500px; /* Nilai tinggi maksimum, sesuaikan dengan kebutuhan */
+  }
+}
+
 .btn-delete:hover {
     background-color: #d32f2f;
 }
