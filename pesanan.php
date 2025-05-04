@@ -3,7 +3,7 @@ session_start();
 include 'config.php';
 
 // Ambil semua data pesanan
-$sql = "SELECT * FROM orders2 ORDER BY created_at DESC";
+$sql = "SELECT * FROM pesanan WHERE status IN ('menunggu konfirmasi', 'pembayaran selesai', 'pesanan disiapkan, 'pesanan dikirim')";
 $result = $conn->query($sql);
 ?>
 
@@ -69,9 +69,9 @@ $result = $conn->query($sql);
               aria-expanded="false">Shop</a>
             <div class="dropdown-menu" aria-labelledby="dropdown04">
               <a class="dropdown-item" href="shop.php">Menu Ayam</a>
-              <a class="dropdown-item" href="product-single.html">Deskripsi Menu</a>
-              <a class="dropdown-item" href="cart.html">Detail Keranjang</a>
-              <a class="dropdown-item" href="checkout.html">Checkout</a>
+              <a class="dropdown-item" href="product-single.php">Deskripsi Menu</a>
+              <a class="dropdown-item" href="cart.php">Detail Keranjang</a>
+              <a class="dropdown-item" href="checkout.php">Checkout</a>
             </div>
           </li>
           <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
@@ -178,7 +178,9 @@ $result = $conn->query($sql);
 </div>
 
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
