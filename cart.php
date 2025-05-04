@@ -297,7 +297,6 @@ if (mysqli_num_rows($result) > 0) {
                             <thead class="thead-primary">
                                 <tr class="text-center">
                                     <th>&nbsp;</th>
-                                    <th>&nbsp;</th>
                                     <th>Nama Menu</th>
                                     <th>Harga</th>
                                     <th>Jumlah</th>
