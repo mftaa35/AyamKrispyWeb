@@ -3,7 +3,7 @@ session_start();
 include 'config.php';
 
 // Ambil semua data pesanan
-$sql = "SELECT * FROM pesanan WHERE status IN ('pesanan selesai')";
+$sql = "SELECT * FROM orders2 WHERE status IN ('pesanan selesai')";
 $result = $conn->query($sql);
 ?>
 
@@ -12,7 +12,7 @@ $result = $conn->query($sql);
 <head>
     <title>Yasaka Fried Chicken - Checkout</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <!-- CSS Links -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
@@ -84,7 +84,7 @@ $result = $conn->query($sql);
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdown04">
             <a class="dropdown-item" href="logout.php">Logout</a>
-            <a class="dropdown-item" href="pesanan.php">Riwayat Pesanan</a>
+            <a class="dropdown-item" href="riwayatpesanan.php">Riwayat Pesanan</a>
             </div>
           </li>
                 </ul>
