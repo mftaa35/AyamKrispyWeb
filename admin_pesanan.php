@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kurir - Kelola Pesanan</title>
+    <title>Admin - Kelola Pesanan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -81,9 +81,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
 <body>
 <div class="container-fluid py-4">
     <div class="dashboard-header">
-        <h2 class="mb-0">Kelola Pesanan</h2>
+        <h2 class="mb-0">Admin - Kelola Pesanan</h2>
         <div class="admin-actions">
-            <a href="kurirdashboard.php" class="btn btn-warning">
+            <a href="admindashboard.php" class="btn btn-warning">
                 <i class="fas fa-home"></i>
                 <span class="d-none d-md-inline-block ms-1">Halaman Utama</span>
             </a>
