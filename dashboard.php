@@ -42,6 +42,7 @@ if (!isset($_SESSION['email'])) {
 </head>
 
 <body class="goto-here">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <div class="py-1 bg-primary">
     <div class="container">
       <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
@@ -76,13 +77,15 @@ if (!isset($_SESSION['email'])) {
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">Shop</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown04">
-              <a class="dropdown-item" href="shop.php">Menu Ayam</a>
-              <a class="dropdown-item" href="product-single.php">Deskripsi Menu</a>
-              <a class="dropdown-item" href="cart.php">Detail Keranjang</a>
-              <a class="dropdown-item" href="checkout.php">Checkout</a>
-            </div>
-          </li>
+              <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown04">
+    <a class="dropdown-item" href="shop.php">Menu Ayam</a>
+    <a class="dropdown-item" href="product-single.php">Deskripsi Menu</a>
+    <a class="dropdown-item" href="cart.php">Detail Keranjang</a>
+    <a class="dropdown-item" href="checkout.php">Checkout</a>
+  </div>
+</li>
           <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
           <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span
                 class="icon-shopping_cart"></span></a></li>
@@ -498,9 +501,12 @@ if (!isset($_SESSION['email'])) {
       <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
       <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
         stroke="#F96D00" />
-    </svg></div>
+    </svg>
+  </div>
 
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="js/jquery.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>
   <script src="js/popper.min.js"></script>
