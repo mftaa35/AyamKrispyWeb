@@ -10,7 +10,7 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Yasaka Fried Chicken - Checkout</title>
+    <title>Yasaka Fried Chicken - Riwayat Pesanan</title>
     <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -104,7 +104,7 @@ $result = $conn->query($sql);
     </div>
 
     <div class="container mt-5">
-    <h2 class="mb-4">Daftar Pesanan</h2>
+    <h2 class="mb-4">Riwayat Pesanan</h2>
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead class="table-dark">
