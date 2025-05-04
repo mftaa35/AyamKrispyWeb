@@ -1,12 +1,6 @@
 <?php
 session_start();
 include 'config.php';
-
-// Proteksi: hanya admin@gmail.com yang boleh masuk
-// if (!isset($_SESSION['pengguna_email']) || $_SESSION['pengguna_email'] != 'admin@gmail.com') {
-//     header("Location: admindashboard.php"); // Redirect ke login admin jika bukan admin
-//     exit();
-// }
 ?>
 
 <!DOCTYPE html>
@@ -14,57 +8,73 @@ include 'config.php';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin</title>
+  <title>Dashboard Kurir</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f7f9fb;
+      display: flex;
+      min-height: 100vh;
     }
-  
+
     .sidebar {
       width: 245px;
       background-color: #4CAF50;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
       color: #fff;
       padding: 20px;
+      flex-shrink: 0;
       transition: all 0.3s ease;
     }
-  
+
+    .sidebar.collapsed {
+      width: 70px;
+    }
+
     .sidebar .profile {
       text-align: center;
       margin-bottom: 30px;
     }
-  
+
+    .sidebar.collapsed .profile h2,
+    .sidebar.collapsed .profile p,
+    .sidebar.collapsed .menu span {
+      display: none;
+    }
+
     .sidebar .profile img {
       width: 80px;
       height: 80px;
       border-radius: 50%;
       border: 3px solid #fff;
     }
-  
+
     .sidebar .profile h2 {
       margin: 10px 0 5px;
       font-size: 20px;
     }
-  
+
     .sidebar .profile p {
       font-size: 14px;
       color: #dfe6e9;
     }
-  
-    .sidebar .menu ul {
+
+    .menu ul {
       list-style: none;
-      padding-left: 0;
+      padding: 0;
     }
-  
-    .sidebar .menu li {
+
+    .menu li {
       margin: 15px 0;
     }
-  
-    .sidebar .menu a {
+
+    .menu a {
       color: #fff;
       text-decoration: none;
       display: flex;
@@ -73,89 +83,88 @@ include 'config.php';
       border-radius: 8px;
       transition: background 0.3s;
     }
-  
-    .sidebar .menu a:hover {
+
+    .menu a:hover {
       background: rgba(255, 255, 255, 0.1);
     }
-  
-    .sidebar .menu a i {
+
+    .menu a i {
       margin-right: 10px;
     }
-  
+
     .main-content {
-      margin-left: 245px;
+      flex-grow: 1;
       padding: 20px;
       transition: all 0.3s ease;
     }
-  
+
     .topbar {
       background: #ffffff;
-      padding: 30px 20px;
+      padding: 15px 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-radius: 15px;
+      margin-bottom: 20px;
     }
-  
+
     .toggle-menu {
-      font-size: 20px;
+      font-size: 22px;
       cursor: pointer;
       color: #4CAF50;
     }
-  
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin: 20px 0;
-    }
-  
-    .card {
-      background: linear-gradient(135deg, #e0f7fa, #ffffff);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      transition: transform 0.2s;
-    }
-  
-    .card:hover {
-      transform: translateY(-5px);
-    }
-  
-    .card h3 {
-      font-size: 32px;
-      color: #2c3e50;
-    }
-  
-    .card p {
-      font-size: 14px;
-      color: #7f8c8d;
-    }
-  
+
     .info-box {
       background: #ffffff;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
-  
+
     .info-box h2 {
       color: #4CAF50;
       margin-bottom: 10px;
     }
-  
+
     .info-box p {
       color: #555;
       line-height: 1.6;
     }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        position: fixed;
+        height: 100%;
+        z-index: 1000;
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        background: #fff;
+      }
+    }
   </style>
-  
 </head>
+
 <body>
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="profile">
-      <!-- <img src="profile.jpg" alt="Profile"> -->
       <h2>Administrator</h2>
       <p>Kurir</p>
     </div>
@@ -170,7 +179,7 @@ include 'config.php';
 
   <div class="main-content">
     <div class="topbar">
-      <span class="toggle-menu"><i class="fas fa-bars"></i></span>
+      <span class="toggle-menu" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
       <h1>Dashboard Kurir</h1>
     </div>
 
@@ -181,18 +190,16 @@ include 'config.php';
   </div>
 
   <script>
-    document.querySelector('.toggle-menu').addEventListener('click', function() {
-      const sidebar = document.querySelector('.sidebar');
-      const main = document.querySelector('.main-content');
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const isMobile = window.innerWidth <= 768;
 
-      if (sidebar.style.width === '70px') {
-        sidebar.style.width = '245px';
-        main.style.marginLeft = '245px';
+      if (isMobile) {
+        sidebar.classList.toggle('active');
       } else {
-        sidebar.style.width = '70px';
-        main.style.marginLeft = '70px';
+        sidebar.classList.toggle('collapsed');
       }
-    });
+    }
   </script>
 </body>
 </html>
