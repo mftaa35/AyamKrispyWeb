@@ -2,6 +2,9 @@
 session_start();
 include 'config.php';
 
+// Set timezone to Asia/Jakarta (or your local timezone)
+date_default_timezone_set('Asia/Jakarta');
+
 // Default filter jika tidak ada yang dipilih
 $status_filter = isset($_GET['status']) ? $_GET['status'] : 'all';
 
@@ -13,6 +16,14 @@ if ($status_filter == 'all') {
 }
 
 $result = $conn->query($sql);
+
+// Function to format datetime from database
+function formatDateTime($datetime) {
+    // Assuming the datetime from database is in UTC or server timezone
+    // Convert to desired format with proper timezone
+    $date = new DateTime($datetime);
+    return $date->format('d-m-Y H:i:s');
+}
 ?>
 
 <!DOCTYPE html>
@@ -239,7 +250,7 @@ $result = $conn->query($sql);
                                         ?>
                                         <span class="badge bg-<?= $badgeClass ?>"><?= htmlspecialchars($status) ?></span>
                                     </td>
-                                    <td><?= htmlspecialchars($row['created_at']) ?></td>
+                                    <td><?= formatDateTime($row['created_at']) ?></td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
@@ -277,7 +288,7 @@ $result = $conn->query($sql);
                             <strong>Telepon:</strong> <?= htmlspecialchars($row['no_telepon']) ?><br>
                             <strong>Total:</strong> Rp <?= number_format($row['total']) ?><br>
                             <strong>Pembayaran:</strong> <?= htmlspecialchars($row['metode_pembayaran']) ?><br>
-                            <strong>Tanggal:</strong> <?= htmlspecialchars($row['created_at']) ?>
+                            <strong>Tanggal:</strong> <?= formatDateTime($row['created_at']) ?>
                         </p>
                         <p><strong>Items:</strong></p>
                         <ul>
