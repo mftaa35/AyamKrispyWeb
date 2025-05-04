@@ -129,7 +129,7 @@ $result = $conn->query("SELECT * FROM menu");
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdown04">
 			<a class="dropdown-item" href="logout.php">Logout</a>
-			<a class="dropdown-item" href="pesanan.php">Riwayat Pesanan</a>
+			<a class="dropdown-item" href="riwayatpesanan.php">Riwayat Pesanan</a>
             </div>
           </li>
 
@@ -151,77 +151,83 @@ $result = $conn->query("SELECT * FROM menu");
     </div>
 
     <section class="ftco-section">
-    	<div class="container">
-    		<div class="row justify-content-center">
-    			<div class="col-md-10 mb-5 text-center">
-    				<ul class="product-category">
-    					<li><a href="#" class="active">Semua Menu</a></li>
-    				</ul>
-    			</div>
-    		</div>
-    		<div class="row">
-          <!-- Mulai loop menu dari database -->
-          <?php
-          if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-          ?>
-    			<div class="col-md-6 col-lg-3 ftco-animate">
-    				<div class="product">
-    					<a href="#" class="img-prod">
-              <img class="img-fluid" src="images/<?php echo htmlspecialchars($row['menu_image']); ?>" alt="<?php echo htmlspecialchars($row['menu_name']); ?>">
-              <?php if (strpos(strtolower($row['menu_name']), 'best seller') !== false || strpos(strtolower($row['deskripsi']), 'best seller') !== false): ?>
-              <span class="status">best seller</span>
-              <?php endif; ?>
-    						<div class="overlay"></div>
-    					</a>
-    					<div class="text py-3 pb-4 px-3 text-center">
-    						<h3><a href="#"><?php echo htmlspecialchars($row['menu_name']); ?></a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
-		    						<p class="price"><span>Rp. <?php echo number_format($row['menu_price'], 0, ',', '.'); ?></span></p>
-		    					</div>
-	    					</div>
-                <div class="bottom-area d-flex px-3">
-                  <div class="m-auto d-flex w-100 justify-content-center">
-                    <form action="cart.php" method="post" class="w-100">
-                      <input type="hidden" name="menu_name" value="<?php echo htmlspecialchars($row['menu_name']); ?>">
-                      <input type="hidden" name="menu_price" value="<?php echo $row['menu_price']; ?>">
-                      <input type="hidden" name="menu_image" value="<?php echo htmlspecialchars($row['menu_image']); ?>">
-                      <input type="number" name="quantity" value="1" min="1" class="quantity-input" required>
-                      <textarea name="note" placeholder="Catatan (opsional)" class="note-input"></textarea>
-                      <button type="submit" name="add_to_cart" class="add-to-cart-btn">Tambah ke Keranjang</button>
-                    </form>
-                  </div>
-                </div>
-    					</div>
-    				</div>
-    			</div>
-          <?php
-            }
-          } else {
-            echo '<div class="col-12 text-center"><p>Belum ada menu tersedia.</p></div>';
-          }
-          ?>
-          <!-- Akhir loop menu dari database -->
-    		</div>
+  <div class="container">
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-10 text-center">
+        <ul class="product-category list-inline d-flex justify-content-center flex-wrap gap-2">
+          <li class="list-inline-item"><a href="#" class="btn btn-outline-primary active">Semua Menu</a></li>
+        </ul>
+      </div>
+    </div>
 
-    		<div class="row mt-5">
-          <div class="col text-center">
-            <div class="block-27">
-              <ul>
-                <li><a href="#">&lt;</a></li>
-                <li class="active"><span>1</span></li>
-                <li><a href="#">&gt;</a></li>
-              </ul>
+    <div class="row g-4">
+      <!-- Mulai loop menu dari database -->
+      <?php if ($result->num_rows > 0): ?>
+        <?php while($row = $result->fetch_assoc()): ?>
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm border-0">
+            <!-- Gambar -->
+            <div class="position-relative">
+              <div class="ratio ratio-1x1">
+                <img src="images/<?php echo htmlspecialchars($row['menu_image']); ?>" 
+                     class="card-img-top object-fit-cover" 
+                     alt="<?php echo htmlspecialchars($row['menu_name']); ?>">
+              </div>
+              <?php if (strpos(strtolower($row['menu_name']), 'best seller') !== false || strpos(strtolower($row['deskripsi']), 'best seller') !== false): ?>
+              <span class="badge bg-danger position-absolute top-0 start-0 m-2">Best Seller</span>
+              <?php endif; ?>
+            </div>
+
+            <!-- Konten -->
+            <div class="card-body text-center d-flex flex-column">
+              <h5 class="card-title"><?php echo htmlspecialchars($row['menu_name']); ?></h5>
+              <p class="text-primary fw-semibold">Rp. <?php echo number_format($row['menu_price'], 0, ',', '.'); ?></p>
+
+              <form action="cart.php" method="post" class="mt-auto">
+                <input type="hidden" name="menu_name" value="<?php echo htmlspecialchars($row['menu_name']); ?>">
+                <input type="hidden" name="menu_price" value="<?php echo $row['menu_price']; ?>">
+                <input type="hidden" name="menu_image" value="<?php echo htmlspecialchars($row['menu_image']); ?>">
+
+                <div class="mb-2">
+                  <input type="number" name="quantity" value="1" min="1" class="form-control" placeholder="Jumlah" required>
+                </div>
+                <div class="mb-2">
+                  <textarea name="note" class="form-control" rows="2" placeholder="Catatan (opsional)"></textarea>
+                </div>
+                <button type="submit" name="add_to_cart" class="btn btn-primary w-100">Tambah ke Keranjang</button>
+              </form>
             </div>
           </div>
         </div>
-    	</div>
-    </section>
+        <?php endwhile; ?>
+      <?php else: ?>
+        <div class="col-12 text-center">
+          <p class="text-muted">Belum ada menu tersedia.</p>
+        </div>
+      <?php endif; ?>
+      <!-- Akhir loop menu -->
+    </div>
 
-		<section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
-      <!-- Konten tambahan bisa ditambahkan di sini -->
-    </section>
+    <!-- Pagination -->
+    <div class="row mt-5">
+      <div class="col text-center">
+        <nav>
+          <ul class="pagination pagination-lg justify-content-center">
+            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+            <li class="page-item active"><span class="page-link">1</span></li>
+            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section kosong (untuk tambahan konten) -->
+<section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
+  <!-- Konten tambahan di sini -->
+</section>
+
     
     <footer class="ftco-footer ftco-section">
 		<div class="container">
