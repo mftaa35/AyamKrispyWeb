@@ -1,14 +1,3 @@
-<?php
-session_start();
-include 'config.php';
-
-// Proteksi: hanya admin@gmail.com yang boleh masuk
-// if (!isset($_SESSION['pengguna_email']) || $_SESSION['pengguna_email'] != 'admin@gmail.com') {
-//     header("Location: admindashboard.php"); // Redirect ke login admin jika bukan admin
-//     exit();
-// }
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -17,53 +6,53 @@ include 'config.php';
   <title>Dashboard Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f7f9fb;
     }
-  
+
     .sidebar {
       width: 245px;
       background-color: #4CAF50;
       position: fixed;
-      top: 0; left: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      bottom: 0;
       color: #fff;
       padding: 20px;
       transition: all 0.3s ease;
+      z-index: 1000;
     }
-  
+
     .sidebar .profile {
       text-align: center;
       margin-bottom: 30px;
     }
-  
-    .sidebar .profile img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 3px solid #fff;
-    }
-  
+
     .sidebar .profile h2 {
       margin: 10px 0 5px;
       font-size: 20px;
     }
-  
+
     .sidebar .profile p {
       font-size: 14px;
       color: #dfe6e9;
     }
-  
+
     .sidebar .menu ul {
       list-style: none;
-      padding-left: 0;
     }
-  
+
     .sidebar .menu li {
       margin: 15px 0;
     }
-  
+
     .sidebar .menu a {
       color: #fff;
       text-decoration: none;
@@ -73,89 +62,99 @@ include 'config.php';
       border-radius: 8px;
       transition: background 0.3s;
     }
-  
+
     .sidebar .menu a:hover {
       background: rgba(255, 255, 255, 0.1);
     }
-  
+
     .sidebar .menu a i {
       margin-right: 10px;
+      min-width: 20px;
+      text-align: center;
     }
-  
+
     .main-content {
       margin-left: 245px;
       padding: 20px;
       transition: all 0.3s ease;
     }
-  
+
     .topbar {
       background: #ffffff;
-      padding: 30px 20px;
+      padding: 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-radius: 15px;
+      margin-bottom: 20px;
     }
-  
+
     .toggle-menu {
-      font-size: 20px;
+      font-size: 24px;
       cursor: pointer;
       color: #4CAF50;
+      display: none;
     }
-  
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin: 20px 0;
-    }
-  
-    .card {
-      background: linear-gradient(135deg, #e0f7fa, #ffffff);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      transition: transform 0.2s;
-    }
-  
-    .card:hover {
-      transform: translateY(-5px);
-    }
-  
-    .card h3 {
-      font-size: 32px;
-      color: #2c3e50;
-    }
-  
-    .card p {
-      font-size: 14px;
-      color: #7f8c8d;
-    }
-  
+
     .info-box {
       background: #ffffff;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
-  
+
     .info-box h2 {
       color: #4CAF50;
       margin-bottom: 10px;
     }
-  
+
     .info-box p {
       color: #555;
       line-height: 1.6;
     }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        width: 70px;
+        padding: 15px 10px;
+      }
+
+      .sidebar .profile h2,
+      .sidebar .profile p,
+      .sidebar .menu span {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 70px;
+      }
+
+      .toggle-menu {
+        display: block;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .topbar h1 {
+        font-size: 18px;
+      }
+
+      .info-box h2 {
+        font-size: 20px;
+      }
+
+      .info-box p {
+        font-size: 14px;
+      }
+    }
   </style>
-  
 </head>
 <body>
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="profile">
-      <!-- <img src="profile.jpg" alt="Profile"> -->
       <h2>Administrator</h2>
       <p>Admin</p>
     </div>
@@ -171,9 +170,9 @@ include 'config.php';
     </div>
   </div>
 
-  <div class="main-content">
+  <div class="main-content" id="main-content">
     <div class="topbar">
-      <span class="toggle-menu"><i class="fas fa-bars"></i></span>
+      <span class="toggle-menu" id="toggleBtn"><i class="fas fa-bars"></i></span>
       <h1>Dashboard Admin</h1>
     </div>
 
@@ -184,16 +183,22 @@ include 'config.php';
   </div>
 
   <script>
-    document.querySelector('.toggle-menu').addEventListener('click', function() {
-      const sidebar = document.querySelector('.sidebar');
-      const main = document.querySelector('.main-content');
+    document.getElementById('toggleBtn').addEventListener('click', function() {
+      const sidebar = document.getElementById('sidebar');
+      const main = document.getElementById('main-content');
 
       if (sidebar.style.width === '70px') {
         sidebar.style.width = '245px';
         main.style.marginLeft = '245px';
+
+        // Tampilkan teks
+        sidebar.querySelectorAll('span, .profile h2, .profile p').forEach(e => e.style.display = '');
       } else {
         sidebar.style.width = '70px';
         main.style.marginLeft = '70px';
+
+        // Sembunyikan teks
+        sidebar.querySelectorAll('span, .profile h2, .profile p').forEach(e => e.style.display = 'none');
       }
     });
   </script>
