@@ -129,7 +129,7 @@ $cart_count = $count_data['total_items'] ? $count_data['total_items'] : 0;
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdown04">
             <a class="dropdown-item" href="logout.php">Logout</a>
-            <a class="dropdown-item" href="pesanan.php">Riwayat Pesanan</a>
+            <a class="dropdown-item" href="riwayatpesanan.php">Riwayat Pesanan</a>
             </div>
           </li>
 	        </ul>
