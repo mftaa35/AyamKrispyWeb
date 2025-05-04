@@ -129,7 +129,7 @@ $result = $conn->query("SELECT * FROM menu");
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdown04">
 			<a class="dropdown-item" href="logout.php">Logout</a>
-			<a class="dropdown-item" href="pesanan.php">Riwayat Pesanan</a>
+			<a class="dropdown-item" href="riwayatpesanan.php">Riwayat Pesanan</a>
             </div>
           </li>
 
