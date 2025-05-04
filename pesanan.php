@@ -2,15 +2,23 @@
 session_start();
 include 'config.php';
 
-// Ambil semua data pesanan
-$sql = "SELECT * FROM orders2 ORDER BY created_at DESC";
+// Default filter jika tidak ada yang dipilih
+$status_filter = isset($_GET['status']) ? $_GET['status'] : 'all';
+
+// Query SQL dengan filter
+if ($status_filter == 'all') {
+    $sql = "SELECT * FROM orders2";
+} else {
+    $sql = "SELECT * FROM orders2 WHERE status = '$status_filter'";
+}
+
 $result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Yasaka Fried Chicken - Checkout</title>
+    <title>Yasaka Fried Chicken - Status Pesanan</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -30,6 +38,68 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Mobile responsive styling */
+        @media (max-width: 767px) {
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .mobile-table {
+                font-size: 0.85rem;
+            }
+            
+            .mobile-card {
+                margin-bottom: 1rem;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .mobile-card .card-header {
+                font-weight: bold;
+                background-color: #f8f9fa;
+            }
+            
+            .filter-section {
+                margin-bottom: 20px;
+            }
+            
+            .badge {
+                display: inline-block;
+                padding: 0.35em 0.65em;
+                font-size: 0.75em;
+                font-weight: 700;
+                line-height: 1;
+                color: #fff;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: baseline;
+                border-radius: 0.25em;
+            }
+            
+            .bg-info {
+                background-color: #17a2b8!important;
+            }
+            
+            .bg-warning {
+                background-color: #ffc107!important;
+                color: #212529!important;
+            }
+            
+            .bg-success {
+                background-color: #28a745!important;
+            }
+            
+            .bg-secondary {
+                background-color: #6c757d!important;
+            }
+            
+            .bg-pay-done {
+                background-color: #6610f2!important;
+            }
+        }
+    </style>
 </head>
 
 <body class="goto-here">
@@ -62,31 +132,28 @@ $result = $conn->query($sql);
             </button>
 
             <div class="collapse navbar-collapse" id="ftco-nav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active"><a href="dashboard.php" class="nav-link">Home</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">Shop</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown04">
-              <a class="dropdown-item" href="shop.php">Menu Ayam</a>
-              <a class="dropdown-item" href="product-single.html">Deskripsi Menu</a>
-              <a class="dropdown-item" href="cart.html">Detail Keranjang</a>
-              <a class="dropdown-item" href="checkout.html">Checkout</a>
-            </div>
-          </li>
-          <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
-          <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span
-                class="icon-shopping_cart"></span></a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
-              Halo, <?php echo isset($_SESSION['nama']) ? $_SESSION['nama'] : 'Pengunjung'; ?>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdown04">
-            <a class="dropdown-item" href="logout.php">Logout</a>
-            <a class="dropdown-item" href="pesanan.php">Riwayat Pesanan</a>
-            </div>
-          </li>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="dashboard.php" class="nav-link">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown04">
+                            <a class="dropdown-item" href="shop.php">Menu Ayam</a>
+                            <a class="dropdown-item" href="product-single.php">Deskripsi Menu</a>
+                            <a class="dropdown-item" href="cart.php">Detail Keranjang</a>
+                            <a class="dropdown-item" href="checkout.php">Checkout</a>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                    <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><span class="icon-shopping_cart"></span></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Halo, <?php echo isset($_SESSION['nama']) ? $_SESSION['nama'] : 'Pengunjung'; ?>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown04">
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                            <a class="dropdown-item active" href="pesanan.php">Riwayat Pesanan</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -104,81 +171,154 @@ $result = $conn->query($sql);
     </div>
 
     <div class="container mt-5">
-    <h2 class="mb-4">Daftar Pesanan</h2>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Nama Depan</th>
-                    <th>Nama Belakang</th>
-                    <th>Alamat</th>
-                    <th>Petunjuk Arah</th>
-                    <th>Kota</th>
-                    <th>Kode Pos</th>
-                    <th>No Telepon</th>
-                    <th>Pesanan</th>
-                    <th>Subtotal</th>
-                    <th>Ongkir</th>
-                    <th>Total</th>
-                    <th>Metode Pembayaran</th>
-                    <th>Status</th>
-                    <th>Tanggal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($result->num_rows > 0): ?>
-                    <?php while($row = $result->fetch_assoc()): ?>
+        <h2 class="mb-4">Daftar Pesanan</h2>
+        
+        <!-- Filter Dropdown -->
+        <div class="row filter-section">
+            <div class="col-md-6 col-sm-12 mb-3">
+                <form action="pesanan.php" method="GET" class="d-flex">
+                    <select name="status" class="form-control mr-2">
+                        <option value="all" <?php echo $status_filter == 'all' ? 'selected' : ''; ?>>Semua Status</option>
+                        <option value="Menunggu konfirmasi" <?php echo $status_filter == 'Menunggu konfirmasi' ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
+                        <option value="Pembayaran selesai" <?php echo $status_filter == 'Pembayaran selesai' ? 'selected' : ''; ?>>Pembayaran Selesai</option>
+                        <option value="Pesanan Disiapkan" <?php echo $status_filter == 'Pesanan Disiapkan' ? 'selected' : ''; ?>>Pesanan Disiapkan</option>
+                        <option value="Pesanan Dikirim" <?php echo $status_filter == 'Pesanan Dikirim' ? 'selected' : ''; ?>>Pesanan Dikirim</option>
+                        <option value="Pesanan Selesai" <?php echo $status_filter == 'Pesanan Selesai' ? 'selected' : ''; ?>>Pesanan Selesai</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Desktop Table View (Hidden on Mobile) -->
+        <div class="d-none d-md-block">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
                         <tr>
-                            <td><?= htmlspecialchars($row['id']) ?></td>
-                            <td><?= htmlspecialchars($row['nama_depan']) ?></td>
-                            <td><?= htmlspecialchars($row['nama_belakang']) ?></td>
-                            <td><?= htmlspecialchars($row['alamat']) ?></td>
-                            <td><?= htmlspecialchars($row['petunjuk_arah']) ?></td>
-                            <td><?= htmlspecialchars($row['kota']) ?></td>
-                            <td><?= htmlspecialchars($row['kode_pos']) ?></td>
-                            <td><?= htmlspecialchars($row['no_telepon']) ?></td>
-                            <td>
-                                <?php
-                                    $items = json_decode($row['pesanan'], true);
-                                    if (is_array($items)) {
-                                        foreach ($items as $item) {
-                                            echo htmlspecialchars($item['menu_name']) . " (x" . $item['quantity'] . ") - Rp " . number_format($item['menu_price']) . "<br>";
-                                        }
-                                    } else {
-                                        echo 'Format tidak valid';
-                                    }
-                                ?>
-                            </td>
-                            <td>Rp <?= number_format($row['subtotal']) ?></td>
-                            <td>Rp <?= number_format($row['ongkir']) ?></td>
-                            <td>Rp <?= number_format($row['total']) ?></td>
-                            <td><?= htmlspecialchars($row['metode_pembayaran']) ?></td>
-                            <td>
-                                <?php
-                                    $status = $row['status'];
-                                    $badgeClass = 'secondary';
-                                    if ($status === 'Menunggu konfirmasi') $badgeClass = 'info';
-                                    elseif ($status === 'Pembayaran selesai') $badgeClass = 'pay done';
-                                    elseif ($status === 'Pesanan Disiapkan') $badgeClass = 'warning';
-                                    elseif ($status === 'Pesanan Dikirim') $badgeClass = 'info';
-                                    elseif ($status === 'Pesanan Selesai') $badgeClass = 'success';
-                                ?>
-                                <span class="badge bg-<?= $badgeClass ?>"><?= htmlspecialchars($status) ?></span>
-                            </td>
-                            <td><?= htmlspecialchars($row['created_at']) ?></td>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Alamat</th>
+                            <th>Pesanan</th>
+                            <th>Total</th>
+                            <th>Metode Pembayaran</th>
+                            <th>Status</th>
+                            <th>Tanggal</th>
                         </tr>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <tr><td colspan="15" class="text-center">Tidak ada data pesanan.</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                        <?php if ($result && $result->num_rows > 0): ?>
+                            <?php while($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($row['id']) ?></td>
+                                    <td><?= htmlspecialchars($row['nama_depan'] . ' ' . $row['nama_belakang']) ?></td>
+                                    <td><?= htmlspecialchars($row['alamat'] . ', ' . $row['kota'] . ' ' . $row['kode_pos']) ?></td>
+                                    <td>
+                                        <?php
+                                            $items = json_decode($row['pesanan'], true);
+                                            if (is_array($items)) {
+                                                foreach ($items as $item) {
+                                                    echo htmlspecialchars($item['menu_name']) . " (x" . $item['quantity'] . ")<br>";
+                                                }
+                                            } else {
+                                                echo 'Format tidak valid';
+                                            }
+                                        ?>
+                                    </td>
+                                    <td>Rp <?= number_format($row['total']) ?></td>
+                                    <td><?= htmlspecialchars($row['metode_pembayaran']) ?></td>
+                                    <td>
+                                        <?php
+                                            $status = $row['status'];
+                                            $badgeClass = 'secondary';
+                                            if ($status === 'Menunggu konfirmasi') $badgeClass = 'info';
+                                            elseif ($status === 'Pembayaran selesai') $badgeClass = 'pay-done';
+                                            elseif ($status === 'Pesanan Disiapkan') $badgeClass = 'warning';
+                                            elseif ($status === 'Pesanan Dikirim') $badgeClass = 'info';
+                                            elseif ($status === 'Pesanan Selesai') $badgeClass = 'success';
+                                        ?>
+                                        <span class="badge bg-<?= $badgeClass ?>"><?= htmlspecialchars($status) ?></span>
+                                    </td>
+                                    <td><?= htmlspecialchars($row['created_at']) ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr><td colspan="8" class="text-center">Tidak ada data pesanan.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Mobile Card View (Visible only on Mobile) -->
+        <div class="d-md-none">
+            <?php 
+            if ($result && $result->num_rows > 0): 
+                // Reset the result pointer
+                $result->data_seek(0);
+                while($row = $result->fetch_assoc()): 
+                    $status = $row['status'];
+                    $badgeClass = 'secondary';
+                    if ($status === 'Menunggu konfirmasi') $badgeClass = 'info';
+                    elseif ($status === 'Pembayaran selesai') $badgeClass = 'pay-done';
+                    elseif ($status === 'Pesanan Disiapkan') $badgeClass = 'warning';
+                    elseif ($status === 'Pesanan Dikirim') $badgeClass = 'info';
+                    elseif ($status === 'Pesanan Selesai') $badgeClass = 'success';
+            ?>
+                <div class="card mobile-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Pesanan #<?= htmlspecialchars($row['id']) ?></span>
+                        <span class="badge bg-<?= $badgeClass ?>"><?= htmlspecialchars($status) ?></span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><?= htmlspecialchars($row['nama_depan'] . ' ' . $row['nama_belakang']) ?></h5>
+                        <p class="card-text">
+                            <strong>Alamat:</strong> <?= htmlspecialchars($row['alamat'] . ', ' . $row['kota'] . ' ' . $row['kode_pos']) ?><br>
+                            <strong>Telepon:</strong> <?= htmlspecialchars($row['no_telepon']) ?><br>
+                            <strong>Total:</strong> Rp <?= number_format($row['total']) ?><br>
+                            <strong>Pembayaran:</strong> <?= htmlspecialchars($row['metode_pembayaran']) ?><br>
+                            <strong>Tanggal:</strong> <?= htmlspecialchars($row['created_at']) ?>
+                        </p>
+                        <p><strong>Items:</strong></p>
+                        <ul>
+                            <?php
+                                $items = json_decode($row['pesanan'], true);
+                                if (is_array($items)) {
+                                    foreach ($items as $item) {
+                                        echo '<li>' . htmlspecialchars($item['menu_name']) . " (x" . $item['quantity'] . ") - Rp " . number_format($item['menu_price']) . '</li>';
+                                    }
+                                } else {
+                                    echo '<li>Format tidak valid</li>';
+                                }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            <?php 
+                endwhile; 
+            else: 
+            ?>
+                <div class="alert alert-info">Tidak ada data pesanan.</div>
+            <?php endif; ?>
+        </div>
     </div>
-</div>
 
+    <!-- Footer Section -->
+    <footer class="ftco-footer ftco-section bg-light mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Yasaka Fried Chicken
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-
-<script src="assets/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
