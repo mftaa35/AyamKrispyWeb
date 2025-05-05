@@ -10,7 +10,7 @@ $status_filter = isset($_GET['status']) ? $_GET['status'] : 'all';
 
 // Query SQL dengan filter
 if ($status_filter == 'all') {
-    $sql = "SELECT * FROM orders2";
+        $sql = "SELECT * FROM orders2 ORDER BY created_at DESC";
 } else {
     $sql = "SELECT * FROM orders2 WHERE status = '$status_filter'";
 }
