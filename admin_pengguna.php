@@ -205,6 +205,10 @@ $result = mysqli_query($conn, $query);
                         <?php endwhile; ?>
                     </tbody>
                 </table>
+                <br>
+                    <a href="tambah_pengguna.php" class="btn-warning btn-action" style="padding: 8px 15px; display: inline-block;">
+                        <i class="fas fa-plus-circle"></i> Tambah Pengguna
+                    </a>
             </div>
         <?php else: ?>
             <div class="alert">
