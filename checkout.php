@@ -260,7 +260,7 @@ if (isset($_POST['order'])) {
                 </thead>
                 <tbody>
                     <?php
-                    $query_items = "SELECT * FROM keranjang WHERE user_id = '$user_id'";
+                    $query_items = "SELECT * FROM keranjang WHERE user_id = '$users_id'";
                     $result_items = mysqli_query($conn, $query_items);
                     $grand_total = 0;
                     while ($item = mysqli_fetch_assoc($result_items)) {
