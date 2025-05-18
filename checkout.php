@@ -32,7 +32,7 @@ if (isset($_POST['orders2'])) {
     }
 
         // Ambil data dari keranjang
-    $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE users_id = '$users_id'");
+    $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE user_id = '$user_id'");
     if (mysqli_num_rows($query_keranjang) == 0) {
         echo "<script>alert('Keranjang Anda kosong!');</script>";
         exit;
@@ -272,7 +272,7 @@ if (isset($_POST['orders2'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $query_items = "SELECT * FROM keranjang WHERE users_id = '$users_id'";
+                                                $query_items = "SELECT * FROM keranjang WHERE user_id = '$user_id'";
                                                 $result_items = mysqli_query($conn, $query_items);
                                                 $grand_total = 0;
                                                 while ($item = mysqli_fetch_assoc($result_items)) {
