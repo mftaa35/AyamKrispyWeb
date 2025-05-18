@@ -280,7 +280,7 @@ if (isset($_POST['order'])) {
                         </td>
                         <td>Rp <?php echo number_format($sub_total); ?></td>
                     </tr>
-                    <?php } ?>
+                    <?php }
                 </tbody>
             </table>
  
