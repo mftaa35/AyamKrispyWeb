@@ -18,7 +18,7 @@ if (isset($_GET['id'])) {
     exit;
 }
 
-// Proses update jika form disubmit
+// Proses update
 if (isset($_POST['update'])) {
     $nama = $_POST['nama'];
     $no_telepon = $_POST['no_telepon'];
@@ -29,7 +29,7 @@ if (isset($_POST['update'])) {
         nama = '$nama', 
         no_telepon = '$no_telepon', 
         alamat = '$alamat', 
-        email = '$email'
+        email = '$email' 
         WHERE users_id = $id";
 
     if (mysqli_query($conn, $update_query)) {
@@ -45,38 +45,103 @@ if (isset($_POST['update'])) {
 <head>
     <meta charset="UTF-8">
     <title>Edit Pengguna</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            padding: 40px;
-            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            font-family: 'Poppins', sans-serif;
+            background-color: #ecf0f1;
         }
 
-        .form-container {
-            background-color: white;
-            padding: 20px 30px;
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #4CAF50;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu ul li {
+            margin: 15px 0;
+        }
+
+        .menu ul li a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .menu ul li a i {
+            margin-right: 10px;
+        }
+
+        .menu ul li a:hover {
+            background-color: rgb(47, 92, 47);
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            width: calc(100% - 250px);
+        }
+
+        .card {
+            background: white;
             border-radius: 8px;
-            width: 400px;
-            margin: auto;
+            padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
         }
 
         h2 {
-            text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
+            margin-top: 10px;
             margin-bottom: 5px;
+            font-weight: bold;
         }
 
-        input[type="text"], input[type="email"] {
+        input[type="text"],
+        input[type="email"] {
             width: 100%;
             padding: 8px 10px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            box-sizing: border-box;
         }
 
         input[type="submit"] {
@@ -86,7 +151,7 @@ if (isset($_POST['update'])) {
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
+            margin-top: 10px;
         }
 
         input[type="submit"]:hover {
@@ -94,32 +159,54 @@ if (isset($_POST['update'])) {
         }
 
         .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #4CAF50;
         }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <h2>Edit Data Pengguna</h2>
-    <form method="POST">
-        <label for="nama">Nama:</label>
-        <input type="text" name="nama" id="nama" value="<?php echo htmlspecialchars($user['nama']); ?>" required>
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="profile">
+        <h2>Administrator</h2>
+        <p>Admin</p>
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="admindashboard.php"><i class="fas fa-home"></i><span>Beranda</span></a></li>
+            <li><a href="admin_page.php"><i class="fas fa-utensils"></i><span>Menu</span></a></li>
+            <li><a href="admin_pesanan.php"><i class="fas fa-shopping-cart"></i><span>Pesanan</span></a></li>
+            <li><a href="admin_pengguna.php"><i class="fas fa-users"></i><span>Pengguna</span></a></li>
+            <li><a href="laporan.php"><i class="fas fa-file-alt"></i><span>Laporan</span></a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+        </ul>
+    </div>
+</div>
 
-        <label for="no_telepon">No Telepon:</label>
-        <input type="text" name="no_telepon" id="no_telepon" value="<?php echo htmlspecialchars($user['no_telepon']); ?>" required>
+<!-- Main Content -->
+<div class="main-content">
+    <div class="card">
+        <h2>Edit Data Pengguna</h2>
+        <form method="POST">
+            <label for="nama">Nama:</label>
+            <input type="text" name="nama" id="nama" value="<?php echo htmlspecialchars($user['nama']); ?>" required>
 
-        <label for="alamat">Alamat:</label>
-        <input type="text" name="alamat" id="alamat" value="<?php echo htmlspecialchars($user['alamat']); ?>" required>
+            <label for="no_telepon">No Telepon:</label>
+            <input type="text" name="no_telepon" id="no_telepon" value="<?php echo htmlspecialchars($user['no_telepon']); ?>" required>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+            <label for="alamat">Alamat:</label>
+            <input type="text" name="alamat" id="alamat" value="<?php echo htmlspecialchars($user['alamat']); ?>" required>
 
-        <input type="submit" name="update" value="Simpan Perubahan">
-    </form>
-    <a href="admin_pengguna.php" class="back-link">← Kembali ke daftar pengguna</a>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+
+            <input type="submit" name="update" value="Simpan Perubahan">
+        </form>
+        <a href="admin_pengguna.php" class="back-link">← Kembali ke Daftar Pengguna</a>
+    </div>
 </div>
 
 </body>
