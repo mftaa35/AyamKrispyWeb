@@ -167,7 +167,7 @@ $result = mysqli_query($conn, $query);
 <!-- Main Content -->
 <div class="main-content">
     <div class="card">
-        <h3>Daftar Pelanggan</h3>
+        <h3>Daftar Pengguna</h3>
 
         <?php if (mysqli_num_rows($result) > 0): ?>
             <div class="table-responsive">
