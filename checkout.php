@@ -14,7 +14,7 @@ $query = mysqli_query($conn, "SELECT * FROM users WHERE users_id = '$users_id'")
 $user = mysqli_fetch_assoc($query);
 
 // Tangani form submit
-if (isset($_POST['order'])) {
+if (isset($_POST['orders2'])) {
     // Validasi input form
     $nama_depan = isset($_POST['nama_depan']) ? mysqli_real_escape_string($conn, $_POST['nama_depan']) : '';
     $nama_belakang = isset($_POST['nama_belakang']) ? mysqli_real_escape_string($conn, $_POST['nama_belakang']) : '';
@@ -32,7 +32,7 @@ if (isset($_POST['order'])) {
     }
 
         // Ambil data dari keranjang
-    $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE user_id = '$user_id'");
+    $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE users_id = '$users_id'");
     if (mysqli_num_rows($query_keranjang) == 0) {
         echo "<script>alert('Keranjang Anda kosong!');</script>";
         exit;
@@ -79,7 +79,7 @@ if (isset($_POST['order'])) {
     if ($query_order->execute()) {
         // Hapus item dari keranjang setelah order berhasil
         // Coba dengan kedua kemungkinan nama kolom
-        mysqli_query($conn, "DELETE FROM keranjang WHERE user_id = '$users_id' OR users_id = '$users_id'");
+        mysqli_query($conn, "DELETE FROM keranjang WHERE users_id = '$users_id' OR users_id = '$users_id'");
         
         // Redirect berdasarkan metode pembayaran
         if ($metode === 'QRIS') {
@@ -272,7 +272,7 @@ if (isset($_POST['order'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $query_items = "SELECT * FROM keranjang WHERE user_id = '$user_id'";
+                                                $query_items = "SELECT * FROM keranjang WHERE users_id = '$users_id'";
                                                 $result_items = mysqli_query($conn, $query_items);
                                                 $grand_total = 0;
                                                 while ($item = mysqli_fetch_assoc($result_items)) {
