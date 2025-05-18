@@ -2,7 +2,7 @@
 include 'config.php';
 session_start();
 
-$user_id = 1;
+$user_id = $users_id;
 // Pastikan user login
 if (!isset($_SESSION['users_id'])) {
     echo "Silakan login terlebih dahulu.";
@@ -197,7 +197,7 @@ if (isset($_POST['order'])) {
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nama_depan" class="font-weight-bold">Nama Depan</label>
-                                    <input type="text" name="nama_depan" id="nama_depan" class="form-control rounded-pill" required>
+                                    <input type="text" name="nama_depan" id="nama_depan" class="form-control" required value="<?= isset($user['nama']) ? htmlspecialchars(explode(' ', $user['nama'])[0]) : '' ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
