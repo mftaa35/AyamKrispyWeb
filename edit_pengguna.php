@@ -26,13 +26,16 @@ if (isset($_POST['update'])) {
     $email = $_POST['email'];
 
     $update_query = "UPDATE users SET 
-        nama = '$nama', 
-        no_telepon = '$no_telepon', 
-        alamat = '$alamat', 
-        email = '$email' 
-        WHERE users_id = $id";
+        nama = ?, 
+        no_telepon = ?, 
+        alamat = ?, 
+        email = ? 
+        WHERE users_id = ?";
 
-    if (mysqli_query($conn, $update_query)) {
+    $stmt = mysqli_prepare($conn, $update_query);
+    mysqli_stmt_bind_param($stmt, "ssssi", $nama, $no_telepon, $alamat, $email, $id);
+
+    if (mysqli_stmt_execute($stmt)) {
         echo "<script>alert('Data berhasil diubah'); window.location='admin_pengguna.php';</script>";
     } else {
         echo "Gagal mengupdate data: " . mysqli_error($conn);
@@ -45,8 +48,10 @@ if (isset($_POST['update'])) {
 <head>
     <meta charset="UTF-8">
     <title>Edit Pengguna</title>
-    <!-- Font Awesome -->
+    <!-- Font Awesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
         body {
             margin: 0;
@@ -73,18 +78,9 @@ if (isset($_POST['update'])) {
             margin-bottom: 20px;
         }
 
-        .profile-img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
         .menu ul {
             list-style: none;
             padding: 0;
-            margin: 0;
         }
 
         .menu ul li {
@@ -106,7 +102,7 @@ if (isset($_POST['update'])) {
         }
 
         .menu ul li a:hover {
-            background-color: rgb(47, 92, 47);
+            background-color: rgba(47, 92, 47, 0.8);
         }
 
         .main-content {
@@ -118,40 +114,53 @@ if (isset($_POST['update'])) {
         .card {
             background: white;
             border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             max-width: 600px;
+            margin: auto;
+            text-align: center;
         }
 
         h2 {
-            margin-bottom: 20px;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
         }
 
         label {
             display: block;
-            margin-top: 10px;
-            margin-bottom: 5px;
+            margin-top: 12px;
             font-weight: bold;
+            text-align: left;
         }
 
         input[type="text"],
         input[type="email"] {
             width: 100%;
-            padding: 8px 10px;
-            margin-bottom: 10px;
+            padding: 10px;
+            margin-top: 5px;
             border-radius: 5px;
             border: 1px solid #ccc;
-            box-sizing: border-box;
+            background-color: #f9f9f9;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #4CAF50;
+            background-color: #fff;
         }
 
         input[type="submit"] {
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            width: 100%;
+            font-size: 16px;
+            transition: 0.3s;
         }
 
         input[type="submit"]:hover {
@@ -160,9 +169,14 @@ if (isset($_POST['update'])) {
 
         .back-link {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 15px;
             text-decoration: none;
             color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -176,12 +190,12 @@ if (isset($_POST['update'])) {
     </div>
     <div class="menu">
         <ul>
-            <li><a href="admindashboard.php"><i class="fas fa-home"></i><span>Beranda</span></a></li>
-            <li><a href="admin_page.php"><i class="fas fa-utensils"></i><span>Menu</span></a></li>
-            <li><a href="admin_pesanan.php"><i class="fas fa-shopping-cart"></i><span>Pesanan</span></a></li>
-            <li><a href="admin_pengguna.php"><i class="fas fa-users"></i><span>Pengguna</span></a></li>
-            <li><a href="laporan.php"><i class="fas fa-file-alt"></i><span>Laporan</span></a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+            <li><a href="admindashboard.php"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="admin_page.php"><i class="fas fa-utensils"></i> Menu</a></li>
+            <li><a href="admin_pesanan.php"><i class="fas fa-shopping-cart"></i> Pesanan</a></li>
+            <li><a href="admin_pengguna.php"><i class="fas fa-users"></i> Pengguna</a></li>
+            <li><a href="laporan.php"><i class="fas fa-file-alt"></i> Laporan</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
 </div>
