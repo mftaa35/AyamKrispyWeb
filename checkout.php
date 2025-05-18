@@ -1,6 +1,6 @@
 <?php
+include 'config.php';
 session_start();
-include 'koneksi.php';
 
 // Pastikan user login
 if (!isset($_SESSION['users_id'])) {
