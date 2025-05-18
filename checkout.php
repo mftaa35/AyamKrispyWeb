@@ -280,7 +280,6 @@ if (isset($_POST['order'])) {
                         </td>
                         <td>Rp <?php echo number_format($sub_total); ?></td>
                     </tr>
-                    }
                 </tbody>
             </table>
  
@@ -446,3 +445,4 @@ function ubahTombol() {
     <script src="js/main.js"></script>
 </body>
 </html>
+}
