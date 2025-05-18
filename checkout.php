@@ -2,7 +2,7 @@
 include 'config.php';
 session_start();
 
-$user_id = $users_id;
+
 // Pastikan user login
 if (!isset($_SESSION['users_id'])) {
     echo "Silakan login terlebih dahulu.";
@@ -203,13 +203,13 @@ if (isset($_POST['order'])) {
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nama_belakang" class="font-weight-bold">Nama Belakang</label>
-                                    <input type="text" name="nama_belakang" id="nama_belakang" class="form-control rounded-pill" required>
+                                    <input type="text" name="nama_belakang" id="nama_belakang" class="form-control" required value="<?= isset($user['nama']) ? htmlspecialchars(explode(' ', $user['nama'])[1] ?? '') : '' ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="alamat" class="font-weight-bold">Alamat</label>
-                                    <input type="text" name="alamat" id="alamat" class="form-control rounded-pill" required>
+                                    <input type="text" name="alamat" id="alamat" class="form-control" required value="<?= isset($user['alamat']) ? htmlspecialchars($user['alamat']) : '' ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -233,7 +233,7 @@ if (isset($_POST['order'])) {
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="telepon" class="font-weight-bold">No Telepon</label>
-                                    <input type="text" name="telepon" id="telepon" class="form-control rounded-pill" required>
+                                    <input type="text" name="telepon" id="telepon" class="form-control" required value="<?= isset($user['no_telepon']) ? htmlspecialchars($user['no_telepon']) : '' ?>">
                                 </div>
                             </div>
                         </div>
