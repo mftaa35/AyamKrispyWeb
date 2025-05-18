@@ -278,7 +278,7 @@ if (isset($_POST['order'])) {
                                                 
                                                 // Query untuk mengambil data keranjang
                                                 // Coba dengan berbagai kemungkinan nama kolom untuk user_id
-                                                $query_items = "SELECT * FROM keranjang WHERE user_id = '$users_id' OR users_id = '$users_id'";
+                                                $query_items = "SELECT * FROM keranjang WHERE users_id = '$users_id' OR users_id = '$users_id'";
                                                 $result_items = mysqli_query($conn, $query_items);
                                                 
                                                 // Debug query
