@@ -32,7 +32,7 @@ if (isset($_POST['order'])) {
     }
 
     // Ambil data dari keranjang
-    $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE user_id = '$user_id'");
+    $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE user_id = '$users_id'");
     if (mysqli_num_rows($query_keranjang) == 0) {
         echo "<script>alert('Keranjang Anda kosong!');</script>";
         exit;
@@ -67,7 +67,7 @@ if (isset($_POST['order'])) {
 
     if ($query_order->execute()) {
         // Hapus item dari keranjang setelah order berhasil
-        mysqli_query($conn, "DELETE FROM keranjang WHERE user_id = '$user_id'");
+        mysqli_query($conn, "DELETE FROM keranjang WHERE user_id = '$users_id'");
         
         // Redirect berdasarkan metode pembayaran
         if ($metode === 'QRIS') {
@@ -246,93 +246,95 @@ if (isset($_POST['order'])) {
                             </div>
                             
                             <div class="col-md-12">
-    <div class="table-responsive">
-        <form action="update_cart.php" method="POST">
-            <table class="table table-hover">
-                <thead class="thead-primary">
-                    <tr class="text-center">
-                        <th>Menu</th>
-                        <th>Harga</th>
-                        <th>Jumlah</th>
-                        <th>Catatan</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $query_items = "SELECT * FROM keranjang WHERE user_id = '$users_id'";
-                    $result_items = mysqli_query($conn, $query_items);
-                    $grand_total = 0;
-                    while ($item = mysqli_fetch_assoc($result_items)) {
-                        $sub_total = $item['menu_price'] * $item['quantity'];
-                        $grand_total += $sub_total;
-                    ?>
-                    <tr class="text-center">
-                        <td class="product-name">
-                            <h4><?php echo htmlspecialchars($item['menu_name']); ?></h4>
-                        </td>
-                        <td>Rp <?php echo number_format($item['menu_price']); ?></td>
-                        <td>
-                        <input type="number" name="quantity[<?php echo $item['id']; ?>]" value="<?php echo $item['quantity']; ?>" readonly class="form-control text-center">
-                        </td>
-                        <td>
-                            <input type="text" name="note[<?php echo $item['id']; ?>]" value="<?php echo htmlspecialchars($item['note']); ?>" class="form-control">
-                        </td>
-                        <td>Rp <?php echo number_format($sub_total); ?></td>
-                    </tr>
-                </tbody>
-            </table>
+                                <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="thead-primary">
+                                                <tr class="text-center">
+                                                    <th>Menu</th>
+                                                    <th>Harga</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Catatan</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $query_items = "SELECT * FROM keranjang WHERE user_id = '$users_id'";
+                                                $result_items = mysqli_query($conn, $query_items);
+                                                $grand_total = 0;
+                                                while ($item = mysqli_fetch_assoc($result_items)) {
+                                                    $sub_total = $item['menu_price'] * $item['quantity'];
+                                                    $grand_total += $sub_total;
+                                                ?>
+                                                <tr class="text-center">
+                                                    <td class="product-name">
+                                                        <h4><?php echo htmlspecialchars($item['menu_name']); ?></h4>
+                                                    </td>
+                                                    <td>Rp <?php echo number_format($item['menu_price']); ?></td>
+                                                    <td>
+                                                    <input type="number" name="quantity[<?php echo $item['id']; ?>]" value="<?php echo $item['quantity']; ?>" readonly class="form-control text-center">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="note[<?php echo $item['id']; ?>]" value="<?php echo htmlspecialchars($item['note']); ?>" class="form-control">
+                                                    </td>
+                                                    <td>Rp <?php echo number_format($sub_total); ?></td>
+                                                </tr>
+                                                <?php } // tutup loop while ?>
+                                            </tbody>
+                                        </table>
  
-<!-- Cart Total & Payment Section -->
-<!-- Cart Total & Payment Section -->
-<div class="row mt-5 justify-content-end">
-                            <div class="col-lg-6">
-                                <div class="cart-total p-4 p-md-5 bg-light rounded shadow-sm">
-                                    <h3 class="text-primary mb-4">Total Pesanan</h3>
-                                    <?php 
-                                    $ongkir = 10000; // Tambah ongkir Rp 10.000
-                                    $total_bayar = $grand_total + $ongkir;
-                                    ?>
-                                    <p class="d-flex justify-content-between">
-                                        <span>Subtotal</span>
-                                        <span>Rp <?php echo number_format($grand_total); ?></span>
-                                    </p>
-                                    <p class="d-flex justify-content-between">
-                                        <span>Ongkir</span>
-                                        <span>Rp <?php echo number_format($ongkir); ?></span>
-                                    </p>
-                                    <hr>
-                                    <p class="d-flex justify-content-between mb-4">
-                                        <span class="font-weight-bold">Total</span>
-                                        <span class="font-weight-bold h5">Rp <?php echo number_format($total_bayar); ?></span>
-                                    </p>
-       
-                                    <div class="form-group">
-                                        <label for="metode_pembayaran" class="font-weight-bold">Metode Pembayaran</label>
-                                        <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required onchange="ubahTombol()">
-                                            <option value="">-- Pilih Metode Pembayaran --</option>
-                                            <?php
-                                            $query = mysqli_query($conn, "SHOW COLUMNS FROM orders2 LIKE 'metode_pembayaran'");
-                                            $row = mysqli_fetch_assoc($query);
-                                            $type = $row['Type'];
+                                    <!-- Cart Total & Payment Section -->
+                                    <div class="row mt-5 justify-content-end">
+                                        <div class="col-lg-6">
+                                            <div class="cart-total p-4 p-md-5 bg-light rounded shadow-sm">
+                                                <h3 class="text-primary mb-4">Total Pesanan</h3>
+                                                <?php 
+                                                $ongkir = 10000; // Tambah ongkir Rp 10.000
+                                                $total_bayar = $grand_total + $ongkir;
+                                                ?>
+                                                <p class="d-flex justify-content-between">
+                                                    <span>Subtotal</span>
+                                                    <span>Rp <?php echo number_format($grand_total); ?></span>
+                                                </p>
+                                                <p class="d-flex justify-content-between">
+                                                    <span>Ongkir</span>
+                                                    <span>Rp <?php echo number_format($ongkir); ?></span>
+                                                </p>
+                                                <hr>
+                                                <p class="d-flex justify-content-between mb-4">
+                                                    <span class="font-weight-bold">Total</span>
+                                                    <span class="font-weight-bold h5">Rp <?php echo number_format($total_bayar); ?></span>
+                                                </p>
+           
+                                                <div class="form-group">
+                                                    <label for="metode_pembayaran" class="font-weight-bold">Metode Pembayaran</label>
+                                                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required onchange="ubahTombol()">
+                                                        <option value="">-- Pilih Metode Pembayaran --</option>
+                                                        <?php
+                                                        $query = mysqli_query($conn, "SHOW COLUMNS FROM orders2 LIKE 'metode_pembayaran'");
+                                                        $row = mysqli_fetch_assoc($query);
+                                                        $type = $row['Type'];
 
-                                            if (preg_match("/^enum\('(.*)'\)$/", $type, $matches)) {
-                                                $enumValues = explode("','", $matches[1]);
-                                                foreach ($enumValues as $value) {
-                                                    $value = trim($value);
-                                                    if ($value !== '') {
-                                                        echo '<option value="' . htmlspecialchars($value) . '">' . htmlspecialchars($value) . '</option>';
-                                                    }
-                                                }
-                                            }
-                                            ?>
-                                        </select>
+                                                        if (preg_match("/^enum\('(.*)'\)$/", $type, $matches)) {
+                                                            $enumValues = explode("','", $matches[1]);
+                                                            foreach ($enumValues as $value) {
+                                                                $value = trim($value);
+                                                                if ($value !== '') {
+                                                                    echo '<option value="' . htmlspecialchars($value) . '">' . htmlspecialchars($value) . '</option>';
+                                                                }
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
 
-                                        <br>
-                                        <input type="hidden" name="order" value="true">
-                                        <button type="submit" id="btnSubmit" class="btn btn-primary py-3 px-4 w-100 rounded-pill">
-                                            <i class="icon-shopping-cart mr-2"></i><span id="btnText">Buat Pesanan</span>
-                                        </button>
+                                                    <br>
+                                                    <input type="hidden" name="order" value="true">
+                                                    <button type="submit" id="btnSubmit" class="btn btn-primary py-3 px-4 w-100 rounded-pill">
+                                                        <i class="icon-shopping-cart mr-2"></i><span id="btnText">Buat Pesanan</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -445,4 +447,3 @@ function ubahTombol() {
     <script src="js/main.js"></script>
 </body>
 </html>
-}
