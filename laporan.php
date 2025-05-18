@@ -388,7 +388,7 @@ mysqli_data_seek($data, 0);
         <li><a href="admindashboard.php"><i class="fas fa-home"></i><span>Beranda</span></a></li>
         <li><a href="admin_page.php"><i class="fas fa-utensils"></i><span>Menu</span></a></li>
         <li><a href="admin_pesanan.php"><i class="fas fa-shopping-cart"></i><span>Pesanan</span></a></li>
-        <li><a href="admin_pengguna.php"><i class="fas fa-users"></i><span>Pelanggan</span></a></li>
+        <li><a href="admin_pengguna.php"><i class="fas fa-users"></i><span>Pengguna</span></a></li>
         <li><a href="laporan.php" class="active"><i class="fas fa-file-alt"></i><span>Laporan</span></a></li>
         <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
