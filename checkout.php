@@ -3,9 +3,8 @@ include 'config.php';
 session_start();
 
 // Pastikan user login
-if (!isset($_SESSION['users_id'])) {
-    echo "Silakan login terlebih dahulu.";
-    exit;
+if(!isset($_SESSION['id_user'])){ // Sesuaikan dengan yang digunakan saat login
+    echo "<script>alert('Anda harus login dahulu');location.href='login.php';</script>";
 }
 
 $users_id = $_SESSION['users_id'];
