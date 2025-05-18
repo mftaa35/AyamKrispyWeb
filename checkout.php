@@ -3,8 +3,9 @@ include 'config.php';
 session_start();
 
 // Pastikan user login
-if(!isset($_SESSION['users_id'])){ // Sesuaikan dengan yang digunakan saat login
-    echo "<script>alert('Anda harus login dahulu');location.href='login.php';</script>";
+if (!isset($_SESSION['users_id'])) {
+    echo "Silakan login terlebih dahulu.";
+    exit;
 }
 
 $users_id = $_SESSION['users_id'];
@@ -506,19 +507,19 @@ if (isset($_POST['order'])) {
                                 <div class="col-md-6 col-12 mb-3">
                                     <div class="form-group">
                                         <label for="nama_depan" class="font-weight-bold">Nama Depan</label>
-                                        <input type="text" name="nama_depan" id="nama_depan" class="form-control rounded-pill" required>
+                                        <input type="text" name="nama_depan" id="nama_depan" class="form-control rounded-pill" value="<?php echo htmlspecialchars($user['nama_depan']); ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <div class="form-group">
                                         <label for="nama_belakang" class="font-weight-bold">Nama Belakang</label>
-                                        <input type="text" name="nama_belakang" id="nama_belakang" class="form-control rounded-pill" required>
+                                       <input type="text" name="nama_belakang" id="nama_belakang" class="form-control rounded-pill" value="<?php echo htmlspecialchars($user['nama_belakang']); ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <div class="form-group">
                                         <label for="alamat" class="font-weight-bold">Alamat</label>
-                                        <input type="text" name="alamat" id="alamat" class="form-control rounded-pill" required>
+                                        <input type="text" name="alamat" id="alamat" class="form-control rounded-pill" value="<?php echo htmlspecialchars($user['alamat']); ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
@@ -530,19 +531,19 @@ if (isset($_POST['order'])) {
                                 <div class="col-md-4 col-6 mb-3">
                                     <div class="form-group">
                                         <label for="kota" class="font-weight-bold">Kota</label>
-                                        <input type="text" name="kota" id="kota" class="form-control rounded-pill" required>
+                                       <input type="text" name="kota" id="kota" class="form-control rounded-pill" value="<?php echo htmlspecialchars($user['kota']); ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-6 mb-3">
                                     <div class="form-group">
                                         <label for="kode_pos" class="font-weight-bold">Kode Pos</label>
-                                        <input type="text" name="kode_pos" id="kode_pos" class="form-control rounded-pill" required>
+                                        <input type="text" name="kode_pos" id="kode_pos" class="form-control rounded-pill" value="<?php echo htmlspecialchars($user['kode_pos']); ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-12 mb-3">
                                     <div class="form-group">
                                         <label for="telepon" class="font-weight-bold">No Telepon</label>
-                                        <input type="tel" name="telepon" id="telepon" class="form-control rounded-pill" required>
+                                       <input type="tel" name="telepon" id="telepon" class="form-control rounded-pill" value="<?php echo htmlspecialchars($user['telepon']); ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -569,7 +570,7 @@ if (isset($_POST['order'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $query_items = "SELECT * FROM keranjang WHERE user_id = '$user_id'";
+                                               $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE user_id = '$users_id'");
                                                 $result_items = mysqli_query($conn, $query_items);
                                                 $grand_total = 0;
                                                 while ($item = mysqli_fetch_assoc($result_items)) {
