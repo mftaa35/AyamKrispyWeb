@@ -25,6 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Tambah Pengguna</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -33,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 0;
             display: flex;
         }
+
         .sidebar {
             width: 250px;
             height: 100vh;
@@ -44,44 +47,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 20px;
             box-sizing: border-box;
         }
+
         .main-content {
             margin-left: 250px;
             padding: 40px;
             width: calc(100% - 250px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
+
         .form-container {
             background-color: white;
             padding: 30px;
             border-radius: 8px;
             max-width: 500px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        input, label {
-            display: block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             width: 100%;
-            margin-bottom: 15px;
         }
+
+        h2 {
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 12px 0 6px;
+        }
+
         input[type="text"],
         input[type="email"],
         input[type="password"] {
-            padding: 10px;
+            width: 100%;
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 6px;
+            transition: 0.3s;
+            background: #f9f9f9;
         }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #4CAF50;
+            background: #fff;
+        }
+
         input[type="submit"] {
+            width: 100%;
+            padding: 12px;
             background-color: #4CAF50;
             border: none;
-            padding: 10px;
             color: white;
-            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
             border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
         }
+
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+
         .back-link {
+            display: block;
+            text-align: center;
             margin-top: 15px;
-            display: inline-block;
+            color: #4CAF50;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -110,14 +154,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form method="POST">
             <label>Nama:</label>
             <input type="text" name="nama" required>
+            
             <label>No Telepon:</label>
             <input type="text" name="no_telepon" required>
+            
             <label>Alamat:</label>
             <input type="text" name="alamat" required>
+            
             <label>Email:</label>
             <input type="email" name="email" required>
+            
             <label>Password:</label>
             <input type="password" name="password" required>
+            
             <input type="submit" value="Simpan">
         </form>
         <a href="admin_pengguna.php" class="back-link">← Kembali ke daftar pengguna</a>
