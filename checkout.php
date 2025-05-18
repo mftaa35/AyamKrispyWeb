@@ -2,7 +2,22 @@
 include 'config.php';
 session_start();
 
-$user_id = 1;
+if (!isset($_SESSION['user_id'])) {
+    echo "<script>alert('Silakan login terlebih dahulu.'); window.location.href='login.php';</script>";
+    exit;
+}
+$user_id = $_SESSION['user_id'];
+
+// Ambil data pengguna
+$query_user = mysqli_query($conn, "SELECT * FROM users WHERE id_pengguna = '$user_id'");
+$user_data = mysqli_fetch_assoc($query_user);
+$nama_depan = $user_data['nama_depan'];
+$nama_belakang = $user_data['nama_belakang'];
+$alamat = $user_data['alamat'];
+$kota = $user_data['kota'];
+$kode_pos = $user_data['kode_pos'];
+$telepon = $user_data['no_telepon'];
+
 
 // Tangani form submit
 if (isset($_POST['order'])) {
