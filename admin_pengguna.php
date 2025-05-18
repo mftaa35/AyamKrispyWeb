@@ -10,7 +10,7 @@ $result = mysqli_query($conn, $query);
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Pelanggan</title>
+    <title>Daftar Pengguna</title>
     <!-- Font Awesome buat icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -194,6 +194,9 @@ $result = mysqli_query($conn, $query);
                             <td><?php echo htmlspecialchars($row['alamat']); ?></td>
                             <td><?php echo htmlspecialchars($row['email']); ?></td>
                             <td>
+                                <a href="edit_pengguna.php?id=<?php echo $row['users_id']; ?>" class="btn-warning btn-action">
+                                    <i class="fas fa-edit"></i> Ubah
+                                </a>
                                 <a href="admin_pengguna.php?hapus=<?php echo $row['users_id']; ?>" class="btn-danger btn-action" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                     <i class="fas fa-trash-alt"></i> Hapus
                                 </a>
