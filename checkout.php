@@ -31,8 +31,15 @@ if (isset($_POST['order'])) {
         exit;
     }
 
-    // Ambil data dari keranjang
+    // Ambil data dari keranjang - periksa kolom ID yang benar
     $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE user_id = '$users_id'");
+    
+    // Debugging - tampilkan query dan jumlah hasil
+    if (!$query_keranjang) {
+        echo "<script>alert('Error query: " . mysqli_error($conn) . "');</script>";
+        exit;
+    }
+    
     if (mysqli_num_rows($query_keranjang) == 0) {
         echo "<script>alert('Keranjang Anda kosong!');</script>";
         exit;
@@ -67,7 +74,8 @@ if (isset($_POST['order'])) {
 
     if ($query_order->execute()) {
         // Hapus item dari keranjang setelah order berhasil
-        mysqli_query($conn, "DELETE FROM keranjang WHERE user_id = '$users_id'");
+        // Coba dengan kedua kemungkinan nama kolom
+        mysqli_query($conn, "DELETE FROM keranjang WHERE user_id = '$users_id' OR users_id = '$users_id'");
         
         // Redirect berdasarkan metode pembayaran
         if ($metode === 'QRIS') {
@@ -259,10 +267,29 @@ if (isset($_POST['order'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $query_items = "SELECT * FROM keranjang WHERE user_id = '$users_id'";
+                                                // Tambahkan debugging untuk memeriksa nilai $users_id
+                                                echo "<!-- Debug: User ID = $users_id -->";
+                                                
+                                                // Cari tahu kolom ID yang benar dalam tabel keranjang
+                                                $check_columns = mysqli_query($conn, "SHOW COLUMNS FROM keranjang");
+                                                while ($column = mysqli_fetch_assoc($check_columns)) {
+                                                    echo "<!-- Column: " . $column['Field'] . " -->";
+                                                }
+                                                
+                                                // Query untuk mengambil data keranjang
+                                                // Coba dengan berbagai kemungkinan nama kolom untuk user_id
+                                                $query_items = "SELECT * FROM keranjang WHERE user_id = '$users_id' OR users_id = '$users_id'";
                                                 $result_items = mysqli_query($conn, $query_items);
+                                                
+                                                // Debug query
+                                                echo "<!-- Debug Query: $query_items -->";
+                                                echo "<!-- Rows found: " . mysqli_num_rows($result_items) . " -->";
+                                                
                                                 $grand_total = 0;
                                                 while ($item = mysqli_fetch_assoc($result_items)) {
+                                                    // Debug item
+                                                    echo "<!-- Item found: " . print_r($item, true) . " -->";
+                                                    
                                                     $sub_total = $item['menu_price'] * $item['quantity'];
                                                     $grand_total += $sub_total;
                                                 ?>
