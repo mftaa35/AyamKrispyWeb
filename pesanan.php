@@ -273,11 +273,11 @@ function formatDateTime($datetime) {
                             <th>ID</th>
                             <th>Nama</th>
                             <th>Pesanan</th>
+                            <th>Alamat</th>
                             <th>Total</th>
                             <th>Pembayaran</th>
                             <th>Status</th>
                             <th>Tanggal</th>
-                            <th>Alamat</th>
                         </tr>
                     </thead>
                     <tbody>
