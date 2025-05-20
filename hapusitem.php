@@ -12,7 +12,7 @@ if (isset($_GET['id'])) {
     }
 
     // Gunakan prepared statement agar lebih aman
-    $stmt = $conn->prepare("DELETE FROM keranjang WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM keranjang1 WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
