@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     // Ambil data dari form
     $menu_name = mysqli_real_escape_string($conn, $_POST['menu_name']);
     $menu_price = (int)$_POST['menu_price'];
-    // $menu_image = mysqli_real_escape_string($conn, $_POST['menu_image']);
+    $menu_image = isset($_POST['menu_image']) ? mysqli_real_escape_string($conn, $_POST['menu_image']) : '';
     $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
     $note = isset($_POST['note']) ? mysqli_real_escape_string($conn, $_POST['note']) : '';
 
@@ -34,8 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
         }
     } else {
         // Jika belum ada, tambahkan ke keranjang
-        $query = "INSERT INTO keranjang1 (users_id, menu_name, menu_price, menu_image, quantity, note)
-                  VALUES ('$users_id', '$menu_name', '$menu_price', '$menu_image', '$quantity', '$note')";
+        // Check the structure of keranjang1 table and include all required fields
+        // If id is auto-increment, you shouldn't include it in the INSERT statement
+        // If id is not auto-increment, you need to generate a unique id
+        
+        // First, get the maximum id currently in the table to generate a new one
+        $max_id_query = "SELECT MAX(id) as max_id FROM keranjang1";
+        $max_id_result = mysqli_query($conn, $max_id_query);
+        $max_id_data = mysqli_fetch_assoc($max_id_result);
+        $new_id = ($max_id_data['max_id'] ? $max_id_data['max_id'] + 1 : 1);
+        
+        $query = "INSERT INTO keranjang1 (id, users_id, menu_name, menu_price, menu_image, quantity, note)
+                  VALUES ('$new_id', '$users_id', '$menu_name', '$menu_price', '$menu_image', '$quantity', '$note')";
 
         if (mysqli_query($conn, $query)) {
             echo "<script>alert('Produk berhasil ditambahkan ke keranjang!'); window.location.href='cart.php';</script>";
@@ -64,7 +74,7 @@ if (mysqli_num_rows($result) > 0) {
         $jumlah = $product['quantity'];
         $subtotal = $product['menu_price'] * $jumlah;
         $total_bayar += $subtotal;
-        
+    
         // $product['image_path'] = $image_path;
         $product['subtotal'] = $subtotal;
         $cart_items[] = $product;
@@ -72,6 +82,7 @@ if (mysqli_num_rows($result) > 0) {
 }
 ?>
 <!DOCTYPE html>
+<!-- Rest of your HTML code remains unchanged -->
 <html lang="id">
 <head>
     <title>Yasaka Fried Chicken - Keranjang</title>
