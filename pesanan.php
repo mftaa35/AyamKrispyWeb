@@ -120,48 +120,41 @@ function formatDateTime($datetime) {
             margin-bottom: 15px;
             border-radius: 5px;
         }
-       .<style>
-    .btn {
-        padding: 8px 14px;
+       .btn {
+        padding: 8px 16px;
         font-size: 14px;
         border: none;
-        border-radius: 5px;
+        border-radius: 6px;
         cursor: pointer;
-        text-decoration: none;
         display: inline-flex;
         align-items: center;
+        gap: 6px;
+        text-decoration: none;
         transition: background-color 0.3s ease;
     }
 
-    .btn-filter {
+    .btn-green {
         background-color: #28a745;
-        color: white;
+        color: #fff;
     }
 
-    .btn-filter:hover {
+    .btn-green:hover {
         background-color: #218838;
     }
 
-    .btn-back {
-        background-color: #6c757d;
-        color: white;
-    }
-
-    .btn-back:hover {
-        background-color: #5a6268;
-    }
-
     .status-dropdown {
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        padding: 8px 12px;
         font-size: 14px;
+        border-radius: 6px;
+        border: 1.5px solid #000;
     }
 
     .filter-container {
         margin-bottom: 20px;
     }
-</style>
+
+    /* Tambahkan FontAwesome jika belum ada */
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
     </style>
 </head>
@@ -239,17 +232,24 @@ function formatDateTime($datetime) {
         
         <!-- Filter Dropdown -->
         <div class="filter-container">
-    <form method="GET" style="display: flex; align-items: center; gap: 10px;">
+    <form method="GET" style="display: flex; align-items: center; gap: 12px;">
         <select name="status" class="status-dropdown">
             <option value="">Semua Status</option>
             <option value="Menunggu">Menunggu</option>
             <option value="Diproses">Diproses</option>
             <option value="Selesai">Selesai</option>
         </select>
-        <button type="submit" class="btn btn-filter">🔍 Filter</button>
-        <a href="shop.php" class="btn btn-back">⬅️ Kembali ke Menu</a>
+
+        <button type="submit" class="btn btn-green">
+            <i class="fa fa-search"></i> Filter
+        </button>
+
+        <a href="shop.php" class="btn btn-green">
+            <i class="fa fa-arrow-left"></i> Kembali ke Menu
+        </a>
     </form>
 </div>
+
 
         
         <!-- Desktop Table View (Hidden on Mobile) -->
