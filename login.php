@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Cek jika email adalah kurir (domain @kurir.com)
         elseif (str_ends_with($email, "@kurir.com")) {
             // Cek di database apakah kurir ada
-            $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+            $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($result && $result->num_rows === 1) {
                 $user = $result->fetch_assoc();
                 if ($password === $user['password']) {
-                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['email'] = $user['email'];
                     $_SESSION['role'] = 'kurir';
                     header("Location: kurirdashboard.php");
                     exit();
