@@ -3,7 +3,8 @@ session_start();
 include 'config.php';
 
 // Ambil semua data pesanan
-$sql = "SELECT * FROM orders2 WHERE status IN ('pesanan selesai')";
+// Ambil semua data pesanan
+$sql = "SELECT * FROM orders2 WHERE status IN ('pesanan selesai') ORDER BY created_at DESC";
 $result = $conn->query($sql);
 ?>
 
