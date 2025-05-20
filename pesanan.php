@@ -110,22 +110,32 @@ function formatDateTime($datetime) {
                 background-color: #6610f2!important;
             }
 
-            .filter-btn, .back-btn {
-                background-color: #28a745;
-                color: white;
-                padding: 10px 15px;
-                border: none;
-                border-radius: 5px;
-                font-size: 14px;
-                text-decoration: none;
-                margin-left: 10px;
-                cursor: pointer;
-                }
-                .back-btn:hover {
-                 background-color: #218838;
-    }
-</style>
-
+            body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .pesanan-box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .button-bar {
+            margin-bottom: 20px;
+        }
+        .filter-btn, .back-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .filter-btn:hover, .back-btn:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -213,8 +223,10 @@ function formatDateTime($datetime) {
                         <option value="Pesanan Dikirim" <?php echo $status_filter == 'Pesanan Dikirim' ? 'selected' : ''; ?>>Pesanan Dikirim</option>
                         <option value="Pesanan Selesai" <?php echo $status_filter == 'Pesanan Selesai' ? 'selected' : ''; ?>>Pesanan Selesai</option>
                     </select>
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                <a href="shop.php" class="back-btn">🔙 Kembali ke Menu</a>
+                    <div class="button-bar">
+                            <button class="filter-btn">Filter</button>
+                            <a href="shop.php" class="back-btn">🔙 Kembali ke Menu</a>
+                    </div>
                 </form>
             </div>
         </div>
