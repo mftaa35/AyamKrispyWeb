@@ -4,7 +4,7 @@ session_start();
 
 
 // Pastikan user login
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['users_id'])) {
     echo "Silakan login terlebih dahulu.";
     exit;
 }
