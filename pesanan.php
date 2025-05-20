@@ -54,16 +54,14 @@ function formatDateTime($datetime) {
     <style>
         /* Shared styling */
         .badge {
-            display: inline-block;
-            padding: 0.35em 0.65em;
-            font-size: 0.75em;
-            font-weight: 700;
-            line-height: 1;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 600;
             color: #fff;
             text-align: center;
             white-space: nowrap;
             vertical-align: baseline;
-            border-radius: 0.25em;
+            border-radius: 4px;
         }
         
         .bg-info {
@@ -89,9 +87,9 @@ function formatDateTime($datetime) {
 
         /* Desktop specific styling */
         .desktop-table {
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
         
         .desktop-table thead {
@@ -100,16 +98,12 @@ function formatDateTime($datetime) {
         }
         
         .desktop-table th, .desktop-table td {
-            padding: 15px;
-            vertical-align: middle;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
         }
         
         .desktop-table tbody tr:hover {
-            background-color: rgba(130, 174, 70, 0.05);
-        }
-        
-        .desktop-table tbody tr {
-            border-bottom: 1px solid #f2f2f2;
+            background-color: #f5f5f5;
         }
         
         /* Filter and button styling */
@@ -139,32 +133,16 @@ function formatDateTime($datetime) {
             padding: 8px 12px;
             font-size: 14px;
             border-radius: 6px;
-            border: 1.5px solid #ddd;
-            transition: border-color 0.3s;
-        }
-        
-        .status-dropdown:focus {
-            border-color: #82ae46;
-            outline: none;
+            border: 1px solid #ddd;
+            min-width: 200px;
         }
 
         .filter-container {
             margin-bottom: 20px;
-            background-color: #f8f9fa;
+            background-color: #f9f9f9;
             padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        /* Order details styling */
-        .order-items {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .order-items li {
-            padding: 3px 0;
-            border-bottom: 1px dashed #eee;
+            border: 1px solid #eee;
         }
         
         /* Mobile responsive styling */
@@ -172,10 +150,6 @@ function formatDateTime($datetime) {
             .table-responsive {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
-            }
-            
-            .mobile-table {
-                font-size: 0.85rem;
             }
             
             .mobile-card {
@@ -187,10 +161,6 @@ function formatDateTime($datetime) {
             .mobile-card .card-header {
                 font-weight: bold;
                 background-color: #f8f9fa;
-            }
-            
-            .filter-section {
-                margin-bottom: 20px;
             }
         }
     </style>
@@ -265,11 +235,11 @@ function formatDateTime($datetime) {
     </div>
 
     <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8">
-                <h2 class="mb-4">Daftar Pesanan</h2>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h2>Daftar Pesanan</h2>
             </div>
-            <div class="col-md-4 text-md-right">
+            <div class="col-md-6 text-md-right">
                 <a href="shop.php" class="btn btn-green">
                     <i class="fa fa-arrow-left"></i> Kembali ke Menu
                 </a>
@@ -277,22 +247,16 @@ function formatDateTime($datetime) {
         </div>
         
         <!-- Filter Dropdown -->
-       <div class="container mt-5">
-        <h2 class="mb-4">Daftar Pesanan</h2>
-        
-        <!-- Filter Dropdown -->
-        <div class="row filter-section">
-            <div class="col-md-6 col-sm-12 mb-3">
-                <form action="pesanan.php" method="GET" class="d-flex">
-                    <select name="status" class="form-control mr-2">
-                        <option value="all" <?php echo $status_filter == 'all' ? 'selected' : ''; ?>>Semua Status</option>
+        <div class="filter-container">
+            <form method="GET" style="display: flex; align-items: center; gap: 12px;">
+                <select name="status" class="status-dropdown">
+                    <option value="all" <?php echo $status_filter == 'all' ? 'selected' : ''; ?>>Semua Status</option>
                         <option value="Menunggu konfirmasi" <?php echo $status_filter == 'Menunggu konfirmasi' ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
                         <option value="Pembayaran selesai" <?php echo $status_filter == 'Pembayaran selesai' ? 'selected' : ''; ?>>Pembayaran Selesai</option>
                         <option value="Pesanan Disiapkan" <?php echo $status_filter == 'Pesanan Disiapkan' ? 'selected' : ''; ?>>Pesanan Disiapkan</option>
                         <option value="Pesanan Dikirim" <?php echo $status_filter == 'Pesanan Dikirim' ? 'selected' : ''; ?>>Pesanan Dikirim</option>
                         <option value="Pesanan Selesai" <?php echo $status_filter == 'Pesanan Selesai' ? 'selected' : ''; ?>>Pesanan Selesai</option>
-                    </select>
-                    <div class="button-bar">
+                </select>
 
                 <button type="submit" class="btn btn-green">
                     <i class="fa fa-filter"></i> Terapkan Filter
@@ -303,32 +267,32 @@ function formatDateTime($datetime) {
         <!-- Desktop Table View (Hidden on Mobile) -->
         <div class="d-none d-md-block">
             <div class="table-responsive">
-                <table class="table desktop-table">
+                <table class="desktop-table">
                     <thead>
                         <tr>
-                            <th width="5%">ID</th>
-                            <th width="15%">Nama</th>
-                            <th width="20%">Pesanan</th>
-                            <th width="10%">Total</th>
-                            <th width="15%">Pembayaran</th>
-                            <th width="10%">Status</th>
-                            <th width="15%">Tanggal</th>
-                            <th width="10%">Alamat</th>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Pesanan</th>
+                            <th>Total</th>
+                            <th>Pembayaran</th>
+                            <th>Status</th>
+                            <th>Tanggal</th>
+                            <th>Alamat</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if ($result && $result->num_rows > 0): ?>
                             <?php while($row = $result->fetch_assoc()): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($row['id']) ?></td>
-                                    <td><?= htmlspecialchars($row['nama_depan'] . ' ' . $row['nama_belakang']) ?></td>
+                                    <td><?= htmlspecialchars($row['id'] ?? '') ?></td>
+                                    <td><?= htmlspecialchars(($row['nama_depan'] ?? '') . ' ' . ($row['nama_belakang'] ?? '')) ?></td>
                                     <td>
                                         <ul class="order-items">
                                         <?php
-                                            $items = json_decode($row['pesanan'], true);
+                                            $items = json_decode($row['pesanan'] ?? '[]', true);
                                             if (is_array($items)) {
                                                 foreach ($items as $item) {
-                                                    echo '<li>' . htmlspecialchars($item['menu_name']) . " (x" . $item['quantity'] . ")</li>";
+                                                    echo '<li>' . htmlspecialchars($item['menu_name'] ?? '') . " (x" . ($item['quantity'] ?? 0) . ")</li>";
                                                 }
                                             } else {
                                                 echo 'Format tidak valid';
@@ -336,11 +300,11 @@ function formatDateTime($datetime) {
                                         ?>
                                         </ul>
                                     </td>
-                                    <td>Rp <?= number_format($row['total']) ?></td>
-                                    <td><?= htmlspecialchars($row['metode_pembayaran']) ?></td>
+                                    <td>Rp <?= number_format($row['total'] ?? 0) ?></td>
+                                    <td><?= htmlspecialchars($row['metode_pembayaran'] ?? '') ?></td>
                                     <td>
                                         <?php
-                                            $status = $row['status'];
+                                            $status = $row['status'] ?? '';
                                             $badgeClass = 'secondary';
                                             if ($status === 'Menunggu konfirmasi') $badgeClass = 'info';
                                             elseif ($status === 'Pembayaran selesai') $badgeClass = 'pay-done';
@@ -350,9 +314,9 @@ function formatDateTime($datetime) {
                                         ?>
                                         <span class="badge bg-<?= $badgeClass ?>"><?= htmlspecialchars($status) ?></span>
                                     </td>
-                                    <td><?= formatDateTime($row['created_at']) ?></td>
+                                    <td><?= formatDateTime($row['created_at'] ?? '') ?></td>
                                     <td>
-                                        <button class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="<?= htmlspecialchars($row['alamat'] . ', ' . $row['kota'] . ' ' . $row['kode_pos']) ?>">
+                                        <button class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="<?= htmlspecialchars(($row['alamat'] ?? '') . ', ' . ($row['kota'] ?? '') . ' ' . ($row['kode_pos'] ?? '')) ?>">
                                             <i class="fa fa-map-marker-alt"></i> Lihat
                                         </button>
                                     </td>
@@ -373,7 +337,7 @@ function formatDateTime($datetime) {
                 // Reset the result pointer
                 $result->data_seek(0);
                 while($row = $result->fetch_assoc()): 
-                    $status = $row['status'];
+                    $status = $row['status'] ?? '';
                     $badgeClass = 'secondary';
                     if ($status === 'Menunggu konfirmasi') $badgeClass = 'info';
                     elseif ($status === 'Pembayaran selesai') $badgeClass = 'pay-done';
@@ -383,25 +347,25 @@ function formatDateTime($datetime) {
             ?>
                 <div class="card mobile-card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Pesanan #<?= htmlspecialchars($row['id']) ?></span>
+                        <span>Pesanan #<?= htmlspecialchars($row['id'] ?? '') ?></span>
                         <span class="badge bg-<?= $badgeClass ?>"><?= htmlspecialchars($status) ?></span>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title"><?= htmlspecialchars($row['nama_depan'] . ' ' . $row['nama_belakang']) ?></h5>
+                        <h5 class="card-title"><?= htmlspecialchars(($row['nama_depan'] ?? '') . ' ' . ($row['nama_belakang'] ?? '')) ?></h5>
                         <p class="card-text">
-                            <strong>Alamat:</strong> <?= htmlspecialchars($row['alamat'] . ', ' . $row['kota'] . ' ' . $row['kode_pos']) ?><br>
-                            <strong>Telepon:</strong> <?= htmlspecialchars($row['no_telepon']) ?><br>
-                            <strong>Total:</strong> Rp <?= number_format($row['total']) ?><br>
-                            <strong>Pembayaran:</strong> <?= htmlspecialchars($row['metode_pembayaran']) ?><br>
-                            <strong>Tanggal:</strong> <?= formatDateTime($row['created_at']) ?>
+                            <strong>Alamat:</strong> <?= htmlspecialchars(($row['alamat'] ?? '') . ', ' . ($row['kota'] ?? '') . ' ' . ($row['kode_pos'] ?? '')) ?><br>
+                            <strong>Telepon:</strong> <?= htmlspecialchars($row['no_telepon'] ?? '') ?><br>
+                            <strong>Total:</strong> Rp <?= number_format($row['total'] ?? 0) ?><br>
+                            <strong>Pembayaran:</strong> <?= htmlspecialchars($row['metode_pembayaran'] ?? '') ?><br>
+                            <strong>Tanggal:</strong> <?= formatDateTime($row['created_at'] ?? '') ?>
                         </p>
                         <p><strong>Items:</strong></p>
                         <ul>
                             <?php
-                                $items = json_decode($row['pesanan'], true);
+                                $items = json_decode($row['pesanan'] ?? '[]', true);
                                 if (is_array($items)) {
                                     foreach ($items as $item) {
-                                        echo '<li>' . htmlspecialchars($item['menu_name']) . " (x" . $item['quantity'] . ") - Rp " . number_format($item['menu_price']) . '</li>';
+                                        echo '<li>' . htmlspecialchars($item['menu_name'] ?? '') . " (x" . ($item['quantity'] ?? 0) . ") - Rp " . number_format($item['menu_price'] ?? 0) . '</li>';
                                     }
                                 } else {
                                     echo '<li>Format tidak valid</li>';
