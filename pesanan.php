@@ -109,6 +109,23 @@ function formatDateTime($datetime) {
             .bg-pay-done {
                 background-color: #6610f2!important;
             }
+
+            .filter-btn, .back-btn {
+                background-color: #28a745;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                font-size: 14px;
+                text-decoration: none;
+                margin-left: 10px;
+                cursor: pointer;
+                }
+                .back-btn:hover {
+                 background-color: #218838;
+    }
+</style>
+
         }
     </style>
 </head>
@@ -197,6 +214,7 @@ function formatDateTime($datetime) {
                         <option value="Pesanan Selesai" <?php echo $status_filter == 'Pesanan Selesai' ? 'selected' : ''; ?>>Pesanan Selesai</option>
                     </select>
                     <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="shop.php" class="back-btn">🔙 Kembali ke Menu</a>
                 </form>
             </div>
         </div>
