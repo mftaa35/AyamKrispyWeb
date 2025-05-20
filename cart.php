@@ -3,7 +3,7 @@ include 'config.php';
 session_start();
 
 // Misalnya user login pakai user_id 1
-$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
+$users_id = isset($_SESSION['users_id']) ? $_SESSION['users_id'] : 1;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     // Ambil data dari form
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     $note = isset($_POST['note']) ? mysqli_real_escape_string($conn, $_POST['note']) : '';
 
     // Cek apakah item sudah ada di keranjang
-    $check_query = "SELECT * FROM keranjang WHERE user_id = '$user_id' AND menu_name = '$menu_name'";
+    $check_query = "SELECT * FROM  WHERE users_id = '$users_id' AND menu_name = '$menu_name'";
     $check_result = mysqli_query($conn, $check_query);
 
     if (mysqli_num_rows($check_result) > 0) {
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
         $new_quantity = $existing['quantity'] + $quantity;
         $new_note = trim($existing['note'] . "\n" . $note);
 
-        $update_query = "UPDATE keranjang SET quantity = '$new_quantity', note = '$new_note'
+        $update_query = "UPDATE keranjang1 SET quantity = '$new_quantity', note = '$new_note'
                          WHERE id = '{$existing['id']}'";
 
         if (mysqli_query($conn, $update_query)) {
@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
         }
     } else {
         // Jika belum ada, tambahkan ke keranjang
-        $query = "INSERT INTO keranjang (user_id, menu_name, menu_price, menu_image, quantity, note)
-                  VALUES ('$user_id', '$menu_name', '$menu_price', '$menu_image', '$quantity', '$note')";
+        $query = "INSERT INTO keranjang1 (users_id, menu_name, menu_price, menu_image, quantity, note)
+                  VALUES ('$users_id', '$menu_name', '$menu_price', '$menu_image', '$quantity', '$note')";
 
         if (mysqli_query($conn, $query)) {
             echo "<script>alert('Produk berhasil ditambahkan ke keranjang!'); window.location.href='cart.php';</script>";
@@ -45,13 +45,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
 }
 
 // Hitung jumlah item di keranjang untuk tampilan badge
-$count_query = "SELECT SUM(quantity) as total_items FROM keranjang WHERE user_id = '$user_id'";
+$count_query = "SELECT SUM(quantity) as total_items FROM  WHERE users_id = '$users_id'";
 $count_result = mysqli_query($conn, $count_query);
 $count_data = mysqli_fetch_assoc($count_result);
 $cart_count = $count_data['total_items'] ? $count_data['total_items'] : 0;
 
 // Ambil data keranjang
-$query = "SELECT * FROM keranjang WHERE user_id = '$user_id'";
+$query = "SELECT * FROM  WHERE users_id = '$users_id'";
 $result = mysqli_query($conn, $query);
 $total_bayar = 0;
 $cart_items = [];
