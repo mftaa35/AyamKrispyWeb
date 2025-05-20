@@ -312,7 +312,7 @@ if (mysqli_num_rows($result) > 0) {
                         <table class="table">
                             <thead class="thead-primary">
                                 <tr class="text-center">
-                                    <th>&nbsp;</th>
+                                   <th>product-remove</th>
                                     <th>Nama Menu</th>
                                     <th>Harga</th>
                                     <th>Jumlah</th>
@@ -324,8 +324,11 @@ if (mysqli_num_rows($result) > 0) {
                                 <?php if (!empty($cart_items)): ?>
                                     <?php foreach ($cart_items as $product): ?>
                                         <tr class="text-center">
-                                        <td class='product-remove'><a href='hapusitem.php?id={$product['id']}'><span class='icon-close'></span></a></td>
-
+                                        <td class='product-remove'>
+                            <a href='hapusitem.php?id={$product['id']}' onclick=\"return confirm('Apakah Anda yakin ingin menghapus item ini?');\">
+                                <span class='icon-close'></span>
+                            </a>
+                        </td>
                                             <!-- <td class="menu_image">
                                                 <img src="<?php echo $product['image_path']; ?>" alt="<?php echo htmlspecialchars($product['menu_name']); ?>" style="width: 70px; height: auto;">
                                             </td> -->
