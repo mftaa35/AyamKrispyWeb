@@ -1,20 +1,31 @@
 <?php
-include 'config.php'; // pastikan koneksi database tersedia
+// hapus_item.php
+
+include 'config.php'; // koneksi database
 
 if (isset($_GET['id'])) {
-    $id = intval($_GET['id']); // pastikan id berbentuk angka untuk keamanan
+    $id = intval($_GET['id']); // amankan input
 
-    // Query untuk menghapus item dari tabel keranjang
-    $query = "DELETE FROM keranjang1 WHERE id = $id";
+    // Cek apakah koneksi berhasil
+    if (!$conn) {
+        die("Koneksi database gagal: " . mysqli_connect_error());
+    }
 
-    if (mysqli_query($conn, $query)) {
-        // Berhasil dihapus, kembali ke cart.php
+    // Gunakan prepared statement agar lebih aman
+    $stmt = $conn->prepare("DELETE FROM keranjang WHERE id = ?");
+    $stmt->bind_param("i", $id);
+
+    if ($stmt->execute()) {
+        // Berhasil dihapus
         header('Location: cart.php');
         exit();
     } else {
-        echo "Gagal menghapus item: " . mysqli_error($conn);
+        echo "Gagal menghapus item: " . $stmt->error;
     }
+
+    $stmt->close();
+    $conn->close();
 } else {
-    echo "ID item tidak ditemukan.";
+    echo "ID item tidak ditemukan di URL.";
 }
 ?>
