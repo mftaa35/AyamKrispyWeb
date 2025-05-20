@@ -120,50 +120,49 @@ function formatDateTime($datetime) {
             margin-bottom: 15px;
             border-radius: 5px;
         }
-       .button-bar {
-    display: flex;
-    justify-content: space-between; /* Menyebarkan elemen secara merata */
-    align-items: center;
-    flex-wrap: wrap; /* Agar tetap responsif di berbagai ukuran */
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.filter-btn, .back-btn {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    min-width: 120px; /* Menjaga ukuran minimum agar tidak terlalu kecil */
-}
-
-.filter-btn:hover, .back-btn:hover {
-    background-color: #218838;
-}
-
-.filter-btn:active, .back-btn:active {
-    background-color: #1e7e34;
-}
-
-/* Responsif untuk layar kecil */
-@media (max-width: 767px) {
-    .button-bar {
-        flex-direction: column;
+       .<style>
+    .btn {
+        padding: 8px 14px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
         align-items: center;
+        transition: background-color 0.3s ease;
     }
 
-    .filter-btn, .back-btn {
-        width: 100%;
-        padding: 12px;
+    .btn-filter {
+        background-color: #28a745;
+        color: white;
     }
-}
+
+    .btn-filter:hover {
+        background-color: #218838;
+    }
+
+    .btn-back {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-back:hover {
+        background-color: #5a6268;
+    }
+
+    .status-dropdown {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .filter-container {
+        margin-bottom: 20px;
+    }
+</style>
+
     </style>
 </head>
 
@@ -239,24 +238,19 @@ function formatDateTime($datetime) {
         <h2 class="mb-4">Daftar Pesanan</h2>
         
         <!-- Filter Dropdown -->
-        <div class="row filter-section">
-            <div class="col-md-6 col-sm-12 mb-3">
-                <form action="pesanan.php" method="GET" class="d-flex">
-                    <select name="status" class="form-control mr-2">
-                        <option value="all" <?php echo $status_filter == 'all' ? 'selected' : ''; ?>>Semua Status</option>
-                        <option value="Menunggu konfirmasi" <?php echo $status_filter == 'Menunggu konfirmasi' ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
-                        <option value="Pembayaran selesai" <?php echo $status_filter == 'Pembayaran selesai' ? 'selected' : ''; ?>>Pembayaran Selesai</option>
-                        <option value="Pesanan Disiapkan" <?php echo $status_filter == 'Pesanan Disiapkan' ? 'selected' : ''; ?>>Pesanan Disiapkan</option>
-                        <option value="Pesanan Dikirim" <?php echo $status_filter == 'Pesanan Dikirim' ? 'selected' : ''; ?>>Pesanan Dikirim</option>
-                        <option value="Pesanan Selesai" <?php echo $status_filter == 'Pesanan Selesai' ? 'selected' : ''; ?>>Pesanan Selesai</option>
-                    </select>
-                    <div class="button-bar">
-                            <button class="filter-btn">Filter</button>
-                            <a href="shop.php" class="back-btn">🔙 Kembali ke Menu</a>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <div class="filter-container">
+    <form method="GET" style="display: flex; align-items: center; gap: 10px;">
+        <select name="status" class="status-dropdown">
+            <option value="">Semua Status</option>
+            <option value="Menunggu">Menunggu</option>
+            <option value="Diproses">Diproses</option>
+            <option value="Selesai">Selesai</option>
+        </select>
+        <button type="submit" class="btn btn-filter">🔍 Filter</button>
+        <a href="shop.php" class="btn btn-back">⬅️ Kembali ke Menu</a>
+    </form>
+</div>
+
         
         <!-- Desktop Table View (Hidden on Mobile) -->
         <div class="d-none d-md-block">
