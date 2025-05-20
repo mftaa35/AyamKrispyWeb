@@ -32,19 +32,19 @@ if (isset($_POST['orders2'])) {
     }
 
         // Ambil data dari keranjang
-    $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE user_id = '$user_id'");
-    if (mysqli_num_rows($query_keranjang) == 0) {
+    $query_keranjang = mysqli_query($conn, "SELECT * FROM keranjan1g WHERE users_id = '$users_id'");
+    if (mysqli_num_rows($query_keranjang1) == 0) {
         echo "<script>alert('Keranjang Anda kosong!');</script>";
         exit;
     }
     
     // Debugging - tampilkan query dan jumlah hasil
-    if (!$query_keranjang) {
+    if (!$query_keranjang1) {
         echo "<script>alert('Error query: " . mysqli_error($conn) . "');</script>";
         exit;
     }
     
-    if (mysqli_num_rows($query_keranjang) == 0) {
+    if (mysqli_num_rows($query_keranjang1) == 0) {
         echo "<script>alert('Keranjang Anda kosong!');</script>";
         exit;
     }
@@ -53,7 +53,7 @@ if (isset($_POST['orders2'])) {
     $subtotal = 0;
 
     // Loop untuk mengambil data item dari keranjang
-    while ($item = mysqli_fetch_assoc($query_keranjang)) {
+    while ($item = mysqli_fetch_assoc($query_keranjang1)) {
         $items[] = [
             'menu_name' => $item['menu_name'],
             'menu_price' => $item['menu_price'],
@@ -79,7 +79,7 @@ if (isset($_POST['orders2'])) {
     if ($query_order->execute()) {
         // Hapus item dari keranjang setelah order berhasil
         // Coba dengan kedua kemungkinan nama kolom
-        mysqli_query($conn, "DELETE FROM keranjang WHERE users_id = '$users_id' OR users_id = '$users_id'");
+        mysqli_query($conn, "DELETE FROM keranjang1 WHERE users_id = '$users_id' OR users_id = '$users_id'");
         
         // Redirect berdasarkan metode pembayaran
         if ($metode === 'QRIS') {
