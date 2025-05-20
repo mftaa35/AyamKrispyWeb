@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     $note = isset($_POST['note']) ? mysqli_real_escape_string($conn, $_POST['note']) : '';
 
     // Cek apakah item sudah ada di keranjang
-    // FIX: Added table name "keranjang1" after FROM
     $check_query = "SELECT * FROM keranjang1 WHERE users_id = '$users_id' AND menu_name = '$menu_name'";
     $check_result = mysqli_query($conn, $check_query);
 
@@ -33,32 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
             echo "Gagal update keranjang: " . mysqli_error($conn);
         }
     } else {
-        if(mysqli_num_rows($check_result) > 0) {
-            // Hapus item dari keranjang
-            $delete_query = "DELETE FROM keranjang1 WHERE id = '$id' AND users_id = '$users_id'";
-            
-            if(mysqli_query($conn, $delete_query)) {
-                // Jika berhasil, kembali ke halaman cart
-                echo "<script>alert('Item berhasil dihapus dari keranjang!'); window.location.href='cart.php';</script>";
-            } else {
-                // Jika gagal
-                echo "<script>alert('Gagal menghapus item: " . mysqli_error($conn) . "'); window.location.href='cart.php';</script>";
-            }
-        } else {
-            // Jika item tidak ditemukan atau bukan milik user ini
-            echo "<script>alert('Item tidak ditemukan!'); window.location.href='cart.php';</script>";
-        }
-    } else {
-        // Jika id tidak valid
-        echo "<script>alert('ID tidak valid!'); window.location.href='cart.php';</script>";
-    }
-} else {
-  
         // Jika belum ada, tambahkan ke keranjang
-        // Check the structure of keranjang1 table and include all required fields
-        // If id is auto-increment, you shouldn't include it in the INSERT statement
-        // If id is not auto-increment, you need to generate a unique id
-        
         // First, get the maximum id currently in the table to generate a new one
         $max_id_query = "SELECT MAX(id) as max_id FROM keranjang1";
         $max_id_result = mysqli_query($conn, $max_id_query);
@@ -76,15 +50,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     }
 }
 
+// Handle delete item from cart if requested
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_from_cart'])) {
+    $id = (int)$_POST['item_id']; // Make sure to have this field in your form
+    
+    // Hapus item dari keranjang
+    $delete_query = "DELETE FROM keranjang1 WHERE id = '$id' AND users_id = '$users_id'";
+    
+    if(mysqli_query($conn, $delete_query)) {
+        // Jika berhasil, kembali ke halaman cart
+        echo "<script>alert('Item berhasil dihapus dari keranjang!'); window.location.href='cart.php';</script>";
+    } else {
+        // Jika gagal
+        echo "<script>alert('Gagal menghapus item: " . mysqli_error($conn) . "'); window.location.href='cart.php';</script>";
+    }
+}
+
 // Hitung jumlah item di keranjang untuk tampilan badge
-// FIX: Added table name "keranjang1" after FROM
 $count_query = "SELECT SUM(quantity) as total_items FROM keranjang1 WHERE users_id = '$users_id'";
 $count_result = mysqli_query($conn, $count_query);
 $count_data = mysqli_fetch_assoc($count_result);
 $cart_count = $count_data['total_items'] ? $count_data['total_items'] : 0;
 
 // Ambil data keranjang
-// FIX: Added table name "keranjang1" after FROM
 $query = "SELECT * FROM keranjang1 WHERE users_id = '$users_id'";
 $result = mysqli_query($conn, $query);
 $total_bayar = 0;
