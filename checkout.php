@@ -2,10 +2,9 @@
 include 'config.php';
 session_start();
 
-
 // Pastikan user login
 if (!isset($_SESSION['users_id'])) {
-    echo "Silakan login terlebih dahulu.";
+    echo "<script>alert('Silakan login terlebih dahulu.'); window.location.href='login.php';</script>";
     exit;
 }
 
@@ -14,7 +13,7 @@ $query = mysqli_query($conn, "SELECT * FROM users WHERE users_id = '$users_id'")
 $user = mysqli_fetch_assoc($query);
 
 // Tangani form submit
-if (isset($_POST['orders2'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validasi input form
     $nama_depan = isset($_POST['nama_depan']) ? mysqli_real_escape_string($conn, $_POST['nama_depan']) : '';
     $nama_belakang = isset($_POST['nama_belakang']) ? mysqli_real_escape_string($conn, $_POST['nama_belakang']) : '';
@@ -27,25 +26,21 @@ if (isset($_POST['orders2'])) {
 
     // Periksa apakah semua data sudah ada
     if (empty($nama_depan) || empty($nama_belakang) || empty($alamat) || empty($telepon) || empty($metode)) {
-        echo "<script>alert('Semua kolom harus diisi!');</script>";
+        echo "<script>alert('Semua kolom harus diisi!'); window.history.back();</script>";
         exit;
     }
 
-        // Ambil data dari keranjang
+    // Ambil data dari keranjang
     $query_keranjang1 = mysqli_query($conn, "SELECT * FROM keranjang1 WHERE users_id = '$users_id'");
-    if (mysqli_num_rows($query_keranjang1) == 0) {
-        echo "<script>alert('Keranjang Anda kosong!');</script>";
-        exit;
-    }
     
     // Debugging - tampilkan query dan jumlah hasil
     if (!$query_keranjang1) {
-        echo "<script>alert('Error query: " . mysqli_error($conn) . "');</script>";
+        echo "<script>alert('Error query: " . mysqli_error($conn) . "'); window.history.back();</script>";
         exit;
     }
     
     if (mysqli_num_rows($query_keranjang1) == 0) {
-        echo "<script>alert('Keranjang Anda kosong!');</script>";
+        echo "<script>alert('Keranjang Anda kosong!'); window.location.href='shop.php';</script>";
         exit;
     }
 
@@ -58,6 +53,7 @@ if (isset($_POST['orders2'])) {
             'menu_name' => $item['menu_name'],
             'menu_price' => $item['menu_price'],
             'quantity' => $item['quantity'],
+            'note' => $item['note'] ?? '' // Tambahkan note jika ada
         ];
         $subtotal += ($item['menu_price'] * $item['quantity']);
     }
@@ -69,27 +65,27 @@ if (isset($_POST['orders2'])) {
 
     // Gunakan prepared statement untuk menghindari SQL Injection
     $query_order = $conn->prepare("INSERT INTO orders2 (
-        nama_depan, nama_belakang, alamat, petunjuk_arah, kota, kode_pos, no_telepon,
+        users_id, nama_depan, nama_belakang, alamat, petunjuk_arah, kota, kode_pos, no_telepon,
         pesanan, subtotal, ongkir, total, metode_pembayaran
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    // Bind parameter
-    $query_order->bind_param('ssssssssiiis', $nama_depan, $nama_belakang, $alamat, $petunjuk_arah, $kota, $kode_pos, $telepon, $pesanan, $subtotal, $ongkir, $total, $metode);
+    // Bind parameter - tambahkan users_id
+    $query_order->bind_param('issssssssiiis', $users_id, $nama_depan, $nama_belakang, $alamat, $petunjuk_arah, $kota, $kode_pos, $telepon, $pesanan, $subtotal, $ongkir, $total, $metode);
 
     if ($query_order->execute()) {
         // Hapus item dari keranjang setelah order berhasil
-        // Coba dengan kedua kemungkinan nama kolom
         mysqli_query($conn, "DELETE FROM keranjang1 WHERE users_id = '$users_id'");
         
         // Redirect berdasarkan metode pembayaran
         if ($metode === 'QRIS') {
-            header('Location: qris.php');
+            echo "<script>window.location.href='qris.php';</script>";
         } else {
-            header('Location: pesanan.php');
+            echo "<script>window.location.href='pesanan.php';</script>";
         }
         exit;
     } else {
-        echo "<script>alert('Gagal membuat pesanan: " . $query_order->error . "');</script>";
+        echo "<script>alert('Gagal membuat pesanan: " . $query_order->error . "'); window.history.back();</script>";
+        exit;
     }
 }
 ?>
@@ -290,7 +286,7 @@ if (isset($_POST['orders2'])) {
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="note[<?php echo $item['id']; ?>]" value="<?php echo htmlspecialchars($item['note']); ?>" class="form-control note-input">
+                                                        <input type="text" name="note[<?php echo $item['id']; ?>]" value="<?php echo htmlspecialchars($item['note'] ?? ''); ?>" class="form-control note-input">
                                                     </td>
                                                     <td class="price-display">Rp <?php echo number_format($sub_total); ?></td>
                                                 </tr>
@@ -324,7 +320,7 @@ if (isset($_POST['orders2'])) {
                                                     <div class="order-detail">
                                                         <span>Catatan</span>
                                                         <div class="note-input-wrapper">
-                                                            <input type="text" name="note[<?php echo $item['id']; ?>]" value="<?php echo htmlspecialchars($item['note']); ?>" class="form-control note-input-mobile" placeholder="Tambahkan catatan">
+                                                            <input type="text" name="note[<?php echo $item['id']; ?>]" value="<?php echo htmlspecialchars($item['note'] ?? ''); ?>" class="form-control note-input-mobile" placeholder="Tambahkan catatan">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -393,8 +389,7 @@ if (isset($_POST['orders2'])) {
                                                             ?>
                                                         </select>
 
-                                                        <input type="hidden" name="order" value="true">
-                                                        <button type="submit" id="btnSubmit" class="btn btn-primary py-3 px-4 w-100 rounded-pill mt-4 checkout-btn">
+                                                        <button type="submit" name="orders2" id="btnSubmit" class="btn btn-primary py-3 px-4 w-100 rounded-pill mt-4 checkout-btn">
                                                             <i class="icon-shopping-cart mr-2"></i><span id="btnText">Buat Pesanan</span>
                                                         </button>
                                                     </div>
@@ -413,6 +408,76 @@ if (isset($_POST['orders2'])) {
 
 <!-- Add this to the head section of your HTML -->
 <style>
+    /* Mobile card styling */
+    .order-card {
+        border: 1px solid #e6e6e6;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .order-card-header {
+        background-color: #f8f9fa;
+        padding: 12px 15px;
+        border-bottom: 1px solid #e6e6e6;
+    }
+    
+    .menu-name {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+    }
+    
+    .order-card-body {
+        padding: 15px;
+    }
+    
+    .order-detail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .order-card-footer {
+        background-color: #f8f9fa;
+        padding: 12px 15px;
+        border-top: 1px solid #e6e6e6;
+    }
+    
+    .total-price {
+        font-weight: 600;
+        color: #82ae46;
+    }
+    
+    .quantity-input-mobile {
+        width: 60px;
+        text-align: center;
+    }
+    
+    .note-input-mobile {
+        width: 100%;
+    }
+    
+    .total-divider {
+        height: 1px;
+        background: #e6e6e6;
+    }
+    
+    .summary-label, .summary-value {
+        font-size: 16px;
+    }
+    
+    .total-label, .total-value {
+        font-size: 18px;
+        font-weight: 600;
+    }
+    
+    .total-value {
+        color: #82ae46;
+    }
+    
     .billing-heading {
         position: relative;
         font-weight: 600;
@@ -453,6 +518,8 @@ if (isset($_POST['orders2'])) {
     
     .cart-total {
         border: 1px solid #e6e6e6;
+        padding: 20px;
+        border-radius: 8px;
     }
     
     .btn-primary {
@@ -464,11 +531,6 @@ if (isset($_POST['orders2'])) {
     .btn-primary:hover {
         background: #6f9a3a;
         border-color: #6f9a3a;
-    }
-    
-    .payment-options label {
-        cursor: pointer;
-        font-weight: 500;
     }
 </style>
 
@@ -496,19 +558,19 @@ function ubahTombol() {
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery-migrate-3.0.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.easing.1.3.js"></script>
-    <script src="js/jquery.waypoints.min.js"></script>
-    <script src="js/jquery.stellar.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/aos.js"></script>
-    <script src="js/jquery.animateNumber.min.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
-    <script src="js/scrollax.min.js"></script>
-    <script src="js/main.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-migrate-3.0.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.easing.1.3.js"></script>
+<script src="js/jquery.waypoints.min.js"></script>
+<script src="js/jquery.stellar.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/aos.js"></script>
+<script src="js/jquery.animateNumber.min.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/scrollax.min.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
