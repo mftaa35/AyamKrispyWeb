@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['no_telepon'] = $user['no_telepon'];
                     $_SESSION['alamat']     = $user['alamat'];
                     $_SESSION['role']       = 'user';
-                    header("Location: dashboard.php");
+                    header("Location: shop.php");
                     exit();
                 } else {
                     echo "<script>alert('Password salah!'); window.location.href = 'login-signup.php';</script>";
