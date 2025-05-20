@@ -300,6 +300,7 @@ function formatDateTime($datetime) {
                                         ?>
                                         </ul>
                                     </td>
+                                    <td><span><?php echo htmlspecialchars($row['alamat']); ?></span></td>
                                     <td>Rp <?= number_format($row['total'] ?? 0) ?></td>
                                     <td><?= htmlspecialchars($row['metode_pembayaran'] ?? '') ?></td>
                                     <td>
@@ -315,11 +316,6 @@ function formatDateTime($datetime) {
                                         <span class="badge bg-<?= $badgeClass ?>"><?= htmlspecialchars($status) ?></span>
                                     </td>
                                     <td><?= formatDateTime($row['created_at'] ?? '') ?></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="<?= htmlspecialchars(($row['alamat'] ?? '') . ', ' . ($row['kota'] ?? '') . ' ' . ($row['kode_pos'] ?? '')) ?>">
-                                            <i class="fa fa-map-marker-alt"></i> Lihat
-                                        </button>
-                                    </td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
