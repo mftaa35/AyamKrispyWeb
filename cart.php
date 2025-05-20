@@ -51,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
 }
 
 // Handle delete item from cart if requested
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_from_cart'])) {
-    $id = (int)$_POST['item_id']; // Make sure to have this field in your form
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product-remove'])) {
+    $id = (int)$_POST['id']; // Make sure to have this field in your form
     
     // Hapus item dari keranjang
     $delete_query = "DELETE FROM keranjang1 WHERE id = '$id' AND users_id = '$users_id'";
