@@ -277,14 +277,22 @@ function formatDateTime($datetime) {
         </div>
         
         <!-- Filter Dropdown -->
-        <div class="filter-container">
-            <form method="GET" style="display: flex; align-items: center; gap: 12px;">
-                <select name="status" class="status-dropdown" onchange="this.form.submit()">
-                    <option value="all" <?= $status_filter == 'all' ? 'selected' : '' ?>>Semua Status</option>
-                    <option value="Menunggu" <?= $status_filter == 'Menunggu' ? 'selected' : '' ?>>Menunggu</option>
-                    <option value="Diproses" <?= $status_filter == 'Diproses' ? 'selected' : '' ?>>Diproses</option>
-                    <option value="Selesai" <?= $status_filter == 'Selesai' ? 'selected' : '' ?>>Selesai</option>
-                </select>
+       <div class="container mt-5">
+        <h2 class="mb-4">Daftar Pesanan</h2>
+        
+        <!-- Filter Dropdown -->
+        <div class="row filter-section">
+            <div class="col-md-6 col-sm-12 mb-3">
+                <form action="pesanan.php" method="GET" class="d-flex">
+                    <select name="status" class="form-control mr-2">
+                        <option value="all" <?php echo $status_filter == 'all' ? 'selected' : ''; ?>>Semua Status</option>
+                        <option value="Menunggu konfirmasi" <?php echo $status_filter == 'Menunggu konfirmasi' ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
+                        <option value="Pembayaran selesai" <?php echo $status_filter == 'Pembayaran selesai' ? 'selected' : ''; ?>>Pembayaran Selesai</option>
+                        <option value="Pesanan Disiapkan" <?php echo $status_filter == 'Pesanan Disiapkan' ? 'selected' : ''; ?>>Pesanan Disiapkan</option>
+                        <option value="Pesanan Dikirim" <?php echo $status_filter == 'Pesanan Dikirim' ? 'selected' : ''; ?>>Pesanan Dikirim</option>
+                        <option value="Pesanan Selesai" <?php echo $status_filter == 'Pesanan Selesai' ? 'selected' : ''; ?>>Pesanan Selesai</option>
+                    </select>
+                    <div class="button-bar">
 
                 <button type="submit" class="btn btn-green">
                     <i class="fa fa-filter"></i> Terapkan Filter
