@@ -386,7 +386,8 @@ if (isset($_POST['orders2'])) {
                                                         </select>
 
                                                         <input type="hidden" name="order" value="true">
-                                                       <button type="submit" name="orders2">Buat Pesanan</button>
+                                                       <button type="submit" name="orders2" style="background-color: #28a745; color: white; 
+                                                           padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">🛒 Buat Pesanan</button>
                                                     </div>
                                                 </div>
                                             </div>
