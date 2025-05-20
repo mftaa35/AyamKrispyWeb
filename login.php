@@ -11,16 +11,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($role === 'admin') {
             if ($email !== 'admin11@gmail.com') {
-                echo "<script>alert('Hanya admin11@gmail.com yang bisa login sebagai admin'); window.location.href = 'login-signup.php';</script>";
+                echo "<script>alert('Hanya admin11@gmail.com yang bisa login sebagai admin'); window.location.href = 'login.php';</script>";
                 exit;
             }
 
-            $stmt = $conn->prepare("SELECT * FROM admin WHERE username = ?");
+            $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
             $stmt->bind_param("s", $email);
 
         } elseif ($role === 'kurir') {
             if (!str_ends_with($email, "@kurir.com")) {
-                echo "<script>alert('Hanya email @kurir.com yang dapat login sebagai kurir'); window.location.href = 'login-signup.php';</script>";
+                echo "<script>alert('Hanya email @kurir.com yang dapat login sebagai kurir'); window.location.href = 'login.php';</script>";
                 exit;
             }
 
@@ -71,22 +71,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     exit();
                 } else {
-                    echo "<script>alert('Password salah!'); window.location.href = 'login-signup.php';</script>";
+                    echo "<script>alert('Password salah!'); window.location.href = 'login.php';</script>";
                     exit;
                 }
             }
         } else {
-            echo "<script>alert('Email tidak ditemukan!'); window.location.href = 'login-signup.php';</script>";
+            echo "<script>alert('Email tidak ditemukan!'); window.location.href = 'login.php';</script>";
             exit;
         }
 
         $stmt->close();
     } else {
-        echo "<script>alert('Email, password, dan role harus diisi!'); window.location.href = 'login-signup.php';</script>";
+        echo "<script>alert('Email, password, dan role harus diisi!'); window.location.href = 'login.php';</script>";
         exit;
     }
 } else {
-    header("Location: login-signup.php");
+    header("Location: login.php");
     exit;
 }
 
