@@ -315,11 +315,8 @@ if (mysqli_num_rows($result) > 0) {
                                 <?php if (!empty($cart_items)): ?>
                                     <?php foreach ($cart_items as $product): ?>
                                         <tr class="text-center">
-                                            <td class="product-remove">
-                                                <a href="hapusitem.php?id=<?php echo $product['id']; ?>" class="text-danger">
-                                                    <span class="icon-close"></span>
-                                                </a>
-                                            </td>
+                                        <td class='product-remove'><a href='hapusitem.php?id={$product['id']}'><span class='icon-close'></span></a></td>
+
                                             <!-- <td class="menu_image">
                                                 <img src="<?php echo $product['image_path']; ?>" alt="<?php echo htmlspecialchars($product['menu_name']); ?>" style="width: 70px; height: auto;">
                                             </td> -->
