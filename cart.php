@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     $note = isset($_POST['note']) ? mysqli_real_escape_string($conn, $_POST['note']) : '';
 
     // Cek apakah item sudah ada di keranjang
-    $check_query = "SELECT * FROM  WHERE users_id = '$users_id' AND menu_name = '$menu_name'";
+    // FIX: Added table name "keranjang1" after FROM
+    $check_query = "SELECT * FROM keranjang1 WHERE users_id = '$users_id' AND menu_name = '$menu_name'";
     $check_result = mysqli_query($conn, $check_query);
 
     if (mysqli_num_rows($check_result) > 0) {
@@ -45,13 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
 }
 
 // Hitung jumlah item di keranjang untuk tampilan badge
-$count_query = "SELECT SUM(quantity) as total_items FROM  WHERE users_id = '$users_id'";
+// FIX: Added table name "keranjang1" after FROM
+$count_query = "SELECT SUM(quantity) as total_items FROM keranjang1 WHERE users_id = '$users_id'";
 $count_result = mysqli_query($conn, $count_query);
 $count_data = mysqli_fetch_assoc($count_result);
 $cart_count = $count_data['total_items'] ? $count_data['total_items'] : 0;
 
 // Ambil data keranjang
-$query = "SELECT * FROM  WHERE users_id = '$users_id'";
+// FIX: Added table name "keranjang1" after FROM
+$query = "SELECT * FROM keranjang1 WHERE users_id = '$users_id'";
 $result = mysqli_query($conn, $query);
 $total_bayar = 0;
 $cart_items = [];
@@ -61,13 +64,6 @@ if (mysqli_num_rows($result) > 0) {
         $jumlah = $product['quantity'];
         $subtotal = $product['menu_price'] * $jumlah;
         $total_bayar += $subtotal;
-        
-        // // Fix for image path display
-        // $image_path = $product['menu_image'];
-        // // If the image path doesn't start with http:// or https:// or a slash, add a leading slash
-        // if (!preg_match("/^(http|https):\/\//", $image_path) && substr($image_path, 0, 1) !== '/') {
-        //     $image_path = '/' . $image_path;
-        // }
         
         // $product['image_path'] = $image_path;
         $product['subtotal'] = $subtotal;
