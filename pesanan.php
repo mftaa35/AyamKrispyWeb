@@ -49,7 +49,124 @@ function formatDateTime($datetime) {
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Shared styling */
+        .badge {
+            display: inline-block;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25em;
+        }
+        
+        .bg-info {
+            background-color: #17a2b8!important;
+        }
+        
+        .bg-warning {
+            background-color: #ffc107!important;
+            color: #212529!important;
+        }
+        
+        .bg-success {
+            background-color: #28a745!important;
+        }
+        
+        .bg-secondary {
+            background-color: #6c757d!important;
+        }
+        
+        .bg-pay-done {
+            background-color: #6610f2!important;
+        }
+
+        /* Desktop specific styling */
+        .desktop-table {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .desktop-table thead {
+            background-color: #82ae46; /* Match with the site's primary color */
+            color: white;
+        }
+        
+        .desktop-table th, .desktop-table td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+        
+        .desktop-table tbody tr:hover {
+            background-color: rgba(130, 174, 70, 0.05);
+        }
+        
+        .desktop-table tbody tr {
+            border-bottom: 1px solid #f2f2f2;
+        }
+        
+        /* Filter and button styling */
+        .btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-green {
+            background-color: #82ae46; /* Match with the site's primary color */
+            color: #fff;
+        }
+
+        .btn-green:hover {
+            background-color: #71973c;
+        }
+
+        .status-dropdown {
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1.5px solid #ddd;
+            transition: border-color 0.3s;
+        }
+        
+        .status-dropdown:focus {
+            border-color: #82ae46;
+            outline: none;
+        }
+
+        .filter-container {
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        /* Order details styling */
+        .order-items {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .order-items li {
+            padding: 3px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        
         /* Mobile responsive styling */
         @media (max-width: 767px) {
             .table-responsive {
@@ -75,87 +192,7 @@ function formatDateTime($datetime) {
             .filter-section {
                 margin-bottom: 20px;
             }
-            
-            .badge {
-                display: inline-block;
-                padding: 0.35em 0.65em;
-                font-size: 0.75em;
-                font-weight: 700;
-                line-height: 1;
-                color: #fff;
-                text-align: center;
-                white-space: nowrap;
-                vertical-align: baseline;
-                border-radius: 0.25em;
-            }
-            
-            .bg-info {
-                background-color: #17a2b8!important;
-            }
-            
-            .bg-warning {
-                background-color: #ffc107!important;
-                color: #212529!important;
-            }
-            
-            .bg-success {
-                background-color: #28a745!important;
-            }
-            
-            .bg-secondary {
-                background-color: #6c757d!important;
-            }
-            
-            .bg-pay-done {
-                background-color: #6610f2!important;
-            }
-
-            body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
         }
-        .pesanan-box {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-       .btn {
-        padding: 8px 16px;
-        font-size: 14px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-green {
-        background-color: #28a745;
-        color: #fff;
-    }
-
-    .btn-green:hover {
-        background-color: #218838;
-    }
-
-    .status-dropdown {
-        padding: 8px 12px;
-        font-size: 14px;
-        border-radius: 6px;
-        border: 1.5px solid #000;
-    }
-
-    .filter-container {
-        margin-bottom: 20px;
-    }
-
-    /* Tambahkan FontAwesome jika belum ada */
-    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-
     </style>
 </head>
 
@@ -228,44 +265,47 @@ function formatDateTime($datetime) {
     </div>
 
     <div class="container mt-5">
-        <h2 class="mb-4">Daftar Pesanan</h2>
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="mb-4">Daftar Pesanan</h2>
+            </div>
+            <div class="col-md-4 text-md-right">
+                <a href="shop.php" class="btn btn-green">
+                    <i class="fa fa-arrow-left"></i> Kembali ke Menu
+                </a>
+            </div>
+        </div>
         
         <!-- Filter Dropdown -->
         <div class="filter-container">
-    <form method="GET" style="display: flex; align-items: center; gap: 12px;">
-        <select name="status" class="status-dropdown">
-            <option value="">Semua Status</option>
-            <option value="Menunggu">Menunggu</option>
-            <option value="Diproses">Diproses</option>
-            <option value="Selesai">Selesai</option>
-        </select>
+            <form method="GET" style="display: flex; align-items: center; gap: 12px;">
+                <select name="status" class="status-dropdown" onchange="this.form.submit()">
+                    <option value="all" <?= $status_filter == 'all' ? 'selected' : '' ?>>Semua Status</option>
+                    <option value="Menunggu" <?= $status_filter == 'Menunggu' ? 'selected' : '' ?>>Menunggu</option>
+                    <option value="Diproses" <?= $status_filter == 'Diproses' ? 'selected' : '' ?>>Diproses</option>
+                    <option value="Selesai" <?= $status_filter == 'Selesai' ? 'selected' : '' ?>>Selesai</option>
+                </select>
 
-        <button type="submit" class="btn btn-green">
-            <i class="fa fa-search"></i> Filter
-        </button>
-
-        <a href="shop.php" class="btn btn-green">
-            <i class="fa fa-arrow-left"></i> Kembali ke Menu
-        </a>
-    </form>
-</div>
-
-
+                <button type="submit" class="btn btn-green">
+                    <i class="fa fa-filter"></i> Terapkan Filter
+                </button>
+            </form>
+        </div>
         
         <!-- Desktop Table View (Hidden on Mobile) -->
         <div class="d-none d-md-block">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-dark">
+                <table class="table desktop-table">
+                    <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nama</th>
-                            <th>Alamat</th>
-                            <th>Pesanan</th>
-                            <th>Total</th>
-                            <th>Metode Pembayaran</th>
-                            <th>Status</th>
-                            <th>Tanggal</th>
+                            <th width="5%">ID</th>
+                            <th width="15%">Nama</th>
+                            <th width="20%">Pesanan</th>
+                            <th width="10%">Total</th>
+                            <th width="15%">Pembayaran</th>
+                            <th width="10%">Status</th>
+                            <th width="15%">Tanggal</th>
+                            <th width="10%">Alamat</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -274,18 +314,19 @@ function formatDateTime($datetime) {
                                 <tr>
                                     <td><?= htmlspecialchars($row['id']) ?></td>
                                     <td><?= htmlspecialchars($row['nama_depan'] . ' ' . $row['nama_belakang']) ?></td>
-                                    <td><?= htmlspecialchars($row['alamat'] . ', ' . $row['kota'] . ' ' . $row['kode_pos']) ?></td>
                                     <td>
+                                        <ul class="order-items">
                                         <?php
                                             $items = json_decode($row['pesanan'], true);
                                             if (is_array($items)) {
                                                 foreach ($items as $item) {
-                                                    echo htmlspecialchars($item['menu_name']) . " (x" . $item['quantity'] . ")<br>";
+                                                    echo '<li>' . htmlspecialchars($item['menu_name']) . " (x" . $item['quantity'] . ")</li>";
                                                 }
                                             } else {
                                                 echo 'Format tidak valid';
                                             }
                                         ?>
+                                        </ul>
                                     </td>
                                     <td>Rp <?= number_format($row['total']) ?></td>
                                     <td><?= htmlspecialchars($row['metode_pembayaran']) ?></td>
@@ -302,6 +343,11 @@ function formatDateTime($datetime) {
                                         <span class="badge bg-<?= $badgeClass ?>"><?= htmlspecialchars($status) ?></span>
                                     </td>
                                     <td><?= formatDateTime($row['created_at']) ?></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="<?= htmlspecialchars($row['alamat'] . ', ' . $row['kota'] . ' ' . $row['kode_pos']) ?>">
+                                            <i class="fa fa-map-marker-alt"></i> Lihat
+                                        </button>
+                                    </td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
@@ -382,5 +428,15 @@ function formatDateTime($datetime) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            
+            // Auto-submit filter form when dropdown value changes
+            $('.status-dropdown').on('change', function() {
+                $(this).closest('form').submit();
+            });
+        });
+    </script>
 </body>
 </html>
