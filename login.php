@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['role'] = 'kurir';
                     
                     // Simpan informasi kurir ke database agar login berikutnya bisa dari database
-                    $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+                    $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
                     $stmt->bind_param("ss", $email, $password);
                     $stmt->execute();
                     $stmt->close();
