@@ -30,36 +30,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($result && $result->num_rows === 1) {
                 $user = $result->fetch_assoc();
-                if ($password === $user['password']) {
-                    $_SESSION['email'] = $user['email'];
-                    $_SESSION['role'] = 'kurir';
-                    header("Location: kurirdashboard.php");
-                    exit();
-                } else {
-                    echo "<script>alert('Password salah!'); window.location.href = 'login.php';</script>";
-                    exit;
-                }
+                
+                // Menyimpan data kurir ke dalam session
+                $_SESSION['users_id'] = $user['users_id'] ?? null;
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['nama'] = $user['nama'] ?? '';
+                $_SESSION['no_telepon'] = $user['no_telepon'] ?? '';
+                $_SESSION['alamat'] = $user['alamat'] ?? '';
+                $_SESSION['role'] = 'kurir';
+                
+                // Login langsung tanpa password untuk kurir
+                header("Location: kurirdashboard.php");
+                exit();
             } else {
-                // Jika kurir belum ada di database tapi memiliki email @kurir.com, izinkan login 
-                // dengan password 1234567
-                if ($password === '1234567') {
-                    $_SESSION['username'] = $email;
-                    $_SESSION['role'] = 'kurir';
-                    
-                    // Simpan informasi kurir ke database agar login berikutnya bisa dari database
-                    $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-                    $stmt->bind_param("ss", $email, $password);
-                    $stmt->execute();
-                    $stmt->close();
-                    
-                    header("Location: kurirdashboard.php");
-                    exit();
-                } else {
-                    echo "<script>alert('Password untuk kurir baru adalah 1234567'); window.location.href = 'login.php';</script>";
-                    exit;
-                }
+                // Jika kurir belum ada di database, buat akun baru
+                $nama = explode('@', $email)[0]; // Ambil nama dari email
+                
+                // Simpan informasi kurir ke database tanpa password
+                $stmt = $conn->prepare("INSERT INTO users (email, nama) VALUES (?, ?)");
+                $stmt->bind_param("ss", $email, $nama);
+                $stmt->execute();
+                
+                // Ambil ID yang baru dibuat
+                $users_id = $conn->insert_id;
+                $stmt->close();
+                
+                // Set session untuk kurir baru
+                $_SESSION['users_id'] = $users_id;
+                $_SESSION['email'] = $email;
+                $_SESSION['nama'] = $nama;
+                $_SESSION['role'] = 'kurir';
+                
+                header("Location: kurirdashboard.php");
+                exit();
             }
-            $stmt->close();
         } 
         // Jika bukan admin atau kurir, anggap sebagai user biasa
         else {
