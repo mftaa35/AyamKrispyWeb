@@ -120,23 +120,47 @@ function formatDateTime($datetime) {
             margin-bottom: 15px;
             border-radius: 5px;
         }
+        /* Styling tombol */
+    .button-bar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .filter-btn, .back-btn {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .filter-btn:hover, .back-btn:hover {
+        background-color: #218838;
+    }
+
+    .filter-btn:active, .back-btn:active {
+        background-color: #1e7e34;
+    }
+
+    /* Responsive styling */
+    @media (max-width: 767px) {
         .button-bar {
-            margin-bottom: 20px;
+            flex-direction: column;
+            align-items: center;
         }
+
         .filter-btn, .back-btn {
-            background-color: #28a745;
-            color: white;
-            padding: 8px 14px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            text-decoration: none;
-            cursor: pointer;
-            margin-right: 10px;
+            width: 100%;
+            padding: 12px;
         }
-        .filter-btn:hover, .back-btn:hover {
-            background-color: #218838;
-        }
+    }
     </style>
 </head>
 
