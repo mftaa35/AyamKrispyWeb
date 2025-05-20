@@ -7,7 +7,7 @@ if (isset($_GET['id'])) {
     $id = intval($_GET['id']); // pastikan id berbentuk angka untuk keamanan
 
     // Query untuk menghapus item dari tabel keranjang
-    $query = "DELETE FROM keranjang WHERE id = $id";
+    $query = "DELETE FROM keranjang1 WHERE id = $id";
 
     if (mysqli_query($conn, $query)) {
         // Berhasil dihapus, kembali ke cart.php
