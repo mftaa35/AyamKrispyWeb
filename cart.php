@@ -33,6 +33,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
             echo "Gagal update keranjang: " . mysqli_error($conn);
         }
     } else {
+        if(mysqli_num_rows($check_result) > 0) {
+            // Hapus item dari keranjang
+            $delete_query = "DELETE FROM keranjang1 WHERE id = '$id' AND users_id = '$users_id'";
+            
+            if(mysqli_query($conn, $delete_query)) {
+                // Jika berhasil, kembali ke halaman cart
+                echo "<script>alert('Item berhasil dihapus dari keranjang!'); window.location.href='cart.php';</script>";
+            } else {
+                // Jika gagal
+                echo "<script>alert('Gagal menghapus item: " . mysqli_error($conn) . "'); window.location.href='cart.php';</script>";
+            }
+        } else {
+            // Jika item tidak ditemukan atau bukan milik user ini
+            echo "<script>alert('Item tidak ditemukan!'); window.location.href='cart.php';</script>";
+        }
+    } else {
+        // Jika id tidak valid
+        echo "<script>alert('ID tidak valid!'); window.location.href='cart.php';</script>";
+    }
+} else {
+  
         // Jika belum ada, tambahkan ke keranjang
         // Check the structure of keranjang1 table and include all required fields
         // If id is auto-increment, you shouldn't include it in the INSERT statement
