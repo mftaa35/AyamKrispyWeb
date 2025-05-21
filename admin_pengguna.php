@@ -194,12 +194,14 @@ $result = mysqli_query($conn, $query);
                             <td><?php echo htmlspecialchars($row['alamat']); ?></td>
                             <td><?php echo htmlspecialchars($row['email']); ?></td>
                             <td>
-                                <a href="edit_pengguna.php?id=<?php echo $row['users_id']; ?>" class="btn-warning btn-action">
-                                    <i class="fas fa-edit"></i> Ubah
-                                </a>
-                                <a href="admin_pengguna.php?hapus=<?php echo $row['users_id']; ?>" class="btn-danger btn-action" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                    <i class="fas fa-trash-alt"></i> Hapus
-                                </a>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="edit_pengguna.php?id=<?php echo $row['users_id']; ?>" class="btn btn-warning btn-sm" title="Edit">
+                                        <i class="fas fa-edit"></i> Ubah
+                                    </a>
+                                    <a href="admin_pengguna.php?hapus=<?php echo $row['users_id']; ?>" class="btn btn-danger btn-sm" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                        <i class="fas fa-trash-alt"></i> Hapus
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         <?php endwhile; ?>
