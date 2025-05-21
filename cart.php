@@ -5,6 +5,22 @@ session_start();
 // Misalnya user login pakai user_id 1
 $users_id = isset($_SESSION['users_id']) ? $_SESSION['users_id'] : 1;
 
+// Handle delete item from cart if requested
+if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])) {
+    $id = (int)$_GET['id']; // Make sure to sanitize the input
+    
+    // Hapus item dari keranjang
+    $delete_query = "DELETE FROM keranjang1 WHERE id = '$id' AND users_id = '$users_id'";
+    
+    if(mysqli_query($conn, $delete_query)) {
+        // Jika berhasil, kembali ke halaman cart
+        echo "<script>alert('Item berhasil dihapus dari keranjang!'); window.location.href='cart.php';</script>";
+    } else {
+        // Jika gagal
+        echo "<script>alert('Gagal menghapus item: " . mysqli_error($conn) . "'); window.location.href='cart.php';</script>";
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     // Ambil data dari form
     $menu_name = mysqli_real_escape_string($conn, $_POST['menu_name']);
@@ -50,22 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     }
 }
 
-// Handle delete item from cart if requested
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product-remove'])) {
-    $id = (int)$_POST['id']; // Make sure to have this field in your form
-    
-    // Hapus item dari keranjang
-    $delete_query = "DELETE FROM keranjang1 WHERE id = '$id' AND users_id = '$users_id'";
-    
-    if(mysqli_query($conn, $delete_query)) {
-        // Jika berhasil, kembali ke halaman cart
-        echo "<script>alert('Item berhasil dihapus dari keranjang!'); window.location.href='cart.php';</script>";
-    } else {
-        // Jika gagal
-        echo "<script>alert('Gagal menghapus item: " . mysqli_error($conn) . "'); window.location.href='cart.php';</script>";
-    }
-}
-
 // Hitung jumlah item di keranjang untuk tampilan badge
 $count_query = "SELECT SUM(quantity) as total_items FROM keranjang1 WHERE users_id = '$users_id'";
 $count_result = mysqli_query($conn, $count_query);
@@ -91,7 +91,6 @@ if (mysqli_num_rows($result) > 0) {
 }
 ?>
 <!DOCTYPE html>
-<!-- Rest of your HTML code remains unchanged -->
 <html lang="id">
 <head>
     <title>Yasaka Fried Chicken - Keranjang</title>
@@ -312,7 +311,7 @@ if (mysqli_num_rows($result) > 0) {
                         <table class="table">
                             <thead class="thead-primary">
                                 <tr class="text-center">
-                                   <th>product-remove</th>
+                                    <th>Hapus</th>
                                     <th>Nama Menu</th>
                                     <th>Harga</th>
                                     <th>Jumlah</th>
@@ -324,14 +323,11 @@ if (mysqli_num_rows($result) > 0) {
                                 <?php if (!empty($cart_items)): ?>
                                     <?php foreach ($cart_items as $product): ?>
                                         <tr class="text-center">
-                                        <td class='product-remove'>
-                            <a href='hapusitem.php?id={$product['id']}' onclick=\"return confirm('Apakah Anda yakin ingin menghapus item ini?');\">
-                                <span class='icon-close'></span>
-                            </a>
-                        </td>
-                                            <!-- <td class="menu_image">
-                                                <img src="<?php echo $product['image_path']; ?>" alt="<?php echo htmlspecialchars($product['menu_name']); ?>" style="width: 70px; height: auto;">
-                                            </td> -->
+                                            <td class="product-remove">
+                                                <a href="cart.php?action=delete&id=<?php echo $product['id']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?');">
+                                                    <span class="icon-close"></span>
+                                                </a>
+                                            </td>
                                             <td class="menu_name"><?php echo htmlspecialchars($product['menu_name']); ?></td>
                                             <td class="menu_price">Rp <?php echo number_format($product['menu_price']); ?></td>
                                             <td class="quantity">
@@ -381,7 +377,7 @@ if (mysqli_num_rows($result) > 0) {
                                         <div class="cart-mobile-details flex-grow-1">
                                             <div class="d-flex justify-content-between">
                                                 <div class="cart-mobile-title"><?php echo htmlspecialchars($product['menu_name']); ?></div>
-                                                <a href="hapusitem.php?id=<?php echo $product['id']; ?>" class="cart-mobile-remove">
+                                                <a href="cart.php?action=delete&id=<?php echo $product['id']; ?>" class="cart-mobile-remove" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?');">
                                                     <i class="fas fa-times"></i>
                                                 </a>
                                             </div>
@@ -431,15 +427,15 @@ if (mysqli_num_rows($result) > 0) {
                             </p>
                             <hr>
                             <!-- Sticky bottom navigation for mobile -->
-                <div class="sticky-bottom d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="font-weight-bold">Total: Rp <?php echo number_format($total_bayar); ?></div>
-                        <div class="small text-muted"><?php echo $cart_count; ?> item</div>
-                    </div>
-                    <form action="checkout.php" method="POST">
-                        <input type="hidden" name="total_bayar" value="<?php echo $total_bayar; ?>">
-                    </form>
-                </div>
+                            <div class="sticky-bottom d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="font-weight-bold">Total: Rp <?php echo number_format($total_bayar); ?></div>
+                                    <div class="small text-muted"><?php echo $cart_count; ?> item</div>
+                                </div>
+                                <a href="checkout.php" class="btn btn-primary">
+                                    Checkout <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
                             <div class="d-flex justify-content-between mt-4">
                                 <a href="shop.php" class="btn btn-secondary py-3 px-4">
                                     <i class="fas fa-arrow-left mr-2"></i> Kembali ke Shop
@@ -452,8 +448,6 @@ if (mysqli_num_rows($result) > 0) {
                         </div>
                     </div>
                 </div>
-                
-                
             <?php endif; ?>
         </div>
     </section>
