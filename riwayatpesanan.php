@@ -93,6 +93,51 @@ $result = $conn->query($sql);
                 height: 200px;
             }
         }
+        .riwayat-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.riwayat-table thead {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.riwayat-table th,
+.riwayat-table td {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.riwayat-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.riwayat-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.card h3 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.alert {
+    background-color: #f1c40f;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
     </style>
 </head>
 
