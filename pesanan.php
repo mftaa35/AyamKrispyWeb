@@ -6,10 +6,10 @@ include 'config.php';
 date_default_timezone_set('Asia/Jakarta');
 
 // Default filter jika tidak ada yang dipilih
-$status_filter = isset($_GET['status']) ? $_GET['status'] : 'Menunggu konfirmasi';
+$status_filter = isset($_GET['status']) ? $_GET['status'] : 'all';
 
 // Query SQL dengan filter
-if ($status_filter == 'Menunggu konfirmasi') {
+if ($status_filter == 'all') {
         $sql = "SELECT * FROM orders2 ORDER BY created_at DESC";
 } else {
     $sql = "SELECT * FROM orders2 WHERE status = '$status_filter'";
@@ -250,12 +250,12 @@ function formatDateTime($datetime) {
         <div class="filter-container">
             <form method="GET" style="display: flex; align-items: center; gap: 12px;">
                 <select name="status" class="status-dropdown">
-<!--                     <option value="Menunggu konfirmasi" <?php echo $status_filter == 'Menunggu konfirmasi' ? 'selected' : ''; ?>>Semua Status</option> -->
+                    <option value="all" <?php echo $status_filter == 'all' ? 'selected' : ''; ?>>Semua Status</option>
                         <option value="Menunggu konfirmasi" <?php echo $status_filter == 'Menunggu konfirmasi' ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
-<!--                         <option value="Pembayaran selesai" <?php echo $status_filter == 'Pembayaran selesai' ? 'selected' : ''; ?>>Pembayaran Selesai</option>
+                        <option value="Pembayaran selesai" <?php echo $status_filter == 'Pembayaran selesai' ? 'selected' : ''; ?>>Pembayaran Selesai</option>
                         <option value="Pesanan Disiapkan" <?php echo $status_filter == 'Pesanan Disiapkan' ? 'selected' : ''; ?>>Pesanan Disiapkan</option>
                         <option value="Pesanan Dikirim" <?php echo $status_filter == 'Pesanan Dikirim' ? 'selected' : ''; ?>>Pesanan Dikirim</option>
-                        <option value="Pesanan Selesai" <?php echo $status_filter == 'Pesanan Selesai' ? 'selected' : ''; ?>>Pesanan Selesai</option> -->
+                        <option value="Pesanan Selesai" <?php echo $status_filter == 'Pesanan Selesai' ? 'selected' : ''; ?>>Pesanan Selesai</option>
                 </select>
 
                 <button type="submit" class="btn btn-green">
