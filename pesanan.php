@@ -250,7 +250,7 @@ function formatDateTime($datetime) {
         <div class="filter-container">
             <form method="GET" style="display: flex; align-items: center; gap: 12px;">
                 <select name="status" class="status-dropdown">
-                    <option value="all" <?php echo $status_filter == 'all' ? 'selected' : ''; ?>>Semua Status</option>
+<!--                     <option value="Menunggu konfirmasi" <?php echo $status_filter == 'Menunggu konfirmasi' ? 'selected' : ''; ?>>Semua Status</option> -->
                         <option value="Menunggu konfirmasi" <?php echo $status_filter == 'Menunggu konfirmasi' ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
 <!--                         <option value="Pembayaran selesai" <?php echo $status_filter == 'Pembayaran selesai' ? 'selected' : ''; ?>>Pembayaran Selesai</option>
                         <option value="Pesanan Disiapkan" <?php echo $status_filter == 'Pesanan Disiapkan' ? 'selected' : ''; ?>>Pesanan Disiapkan</option>
