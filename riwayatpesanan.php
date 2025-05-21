@@ -64,24 +64,61 @@ $result = $conn->query($sql);
         }
         
         .hero-wrap {
-            height: 300px;
+            height: 200px;
+            position: relative;
+            z-index: 1;
         }
         
         .container.order-history {
-            margin-top: -50px;
+            margin-top: 80px;  /* Increased from -50px to 80px */
             margin-bottom: 50px;
             background: white;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
         }
         
         .page-title {
             color: #82ae46;
             font-weight: 600;
+            margin-top: 15px;
             margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 2px solid #f1f1f1;
+        }
+
+        .riwayat-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .riwayat-table thead {
+            background-color: #82ae46;
+            color: white;
+        }
+
+        .riwayat-table th,
+        .riwayat-table td {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .riwayat-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .riwayat-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .no-overlap-section {
+            padding-top: 70px;
+            margin-top: -40px;
         }
         
         @media (max-width: 767px) {
@@ -90,54 +127,14 @@ $result = $conn->query($sql);
             }
             
             .hero-wrap {
-                height: 200px;
+                height: 180px;
+            }
+            
+            .container.order-history {
+                margin-top: 50px;
+                padding: 15px;
             }
         }
-        .riwayat-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    font-size: 14px;
-}
-
-.riwayat-table thead {
-    background-color: #27ae60);
-    color: white;
-}
-
-.riwayat-table th,
-.riwayat-table td {
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-.riwayat-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.riwayat-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-.card h3 {
-    margin-bottom: 20px;
-    color: #2c3e50;
-    text-align: center;
-}
-
-.alert {
-    background-color: #f1c40f;
-    padding: 15px;
-    text-align: center;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #333;
-}
-
-.table-responsive {
-    overflow-x: auto;
-}
     </style>
 </head>
 
@@ -209,12 +206,15 @@ $result = $conn->query($sql);
         </div>
     </div>
 
+    <!-- Spacer div to create more gap -->
+    <div style="height: 60px;"></div>
+
     <div class="container order-history">
         <h2 class="page-title">Daftar Riwayat Pesanan</h2>
         
         <?php if ($result->num_rows > 0): ?>
             <div class="table-responsive">
-                <table class="riwayat-table">
+                <table class="table table-bordered table-hover order-history-table">
                     <thead>
                         <tr>
                             <th>ID</th>
