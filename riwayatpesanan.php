@@ -214,7 +214,7 @@ $result = $conn->query($sql);
         
         <?php if ($result->num_rows > 0): ?>
             <div class="table-responsive">
-                <table class="table table-bordered table-hover order-history-table">
+                <table class="riwayat-table">
                     <thead>
                         <tr>
                             <th>ID</th>
