@@ -1,6 +1,22 @@
 <?php
 include 'config.php';
 
+// Proses hapus pengguna jika ada parameter hapus
+if (isset($_GET['hapus'])) {
+    $id = $_GET['hapus'];
+    
+    // Query untuk menghapus data pengguna
+    $delete_query = "DELETE FROM users WHERE users_id = '$id'";
+    
+    if (mysqli_query($conn, $delete_query)) {
+        // Redirect ke halaman yang sama setelah penghapusan berhasil
+        echo "<script>alert('Data pengguna berhasil dihapus!');</script>";
+        echo "<script>window.location.href='admin_pengguna.php';</script>";
+    } else {
+        echo "<script>alert('Gagal menghapus data: " . mysqli_error($conn) . "');</script>";
+    }
+}
+
 // Ambil data pengguna
 $query = "SELECT * FROM users";
 $result = mysqli_query($conn, $query);
