@@ -101,7 +101,7 @@ $result = $conn->query($sql);
 }
 
 .riwayat-table thead {
-    background-color: #rgb(61, 177, 70);
+    background-color: #27ae60);
     color: white;
 }
 
