@@ -127,20 +127,24 @@ $result = mysqli_query($conn, $query);
         }
 
         .btn-warning {
-            background-color: #f39c12;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            text-decoration: none;
-        }
+    background-color: #f39c12;
+    color: white;
+    padding: 3px 8px;         /* lebih kecil dari sebelumnya */
+    font-size: 12px;          /* font lebih kecil */
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+}
 
-        .alert {
-            background-color: #f1c40f;
-            color: black;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+}
     </style>
 </head>
 <body>
